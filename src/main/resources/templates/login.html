@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+                <div class="nav-links">
+                   <button onclick="window.location.href='/'" class="nav-link">Home</button>
+                    
+                    <button onclick="window.location.href='/'" class="nav-link">Threats</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Process</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Contact</button>
+ 
+                    <!-- <button onclick="window.location.href='/register1'" class="nav-cta">Login</button> -->
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Signup Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content container">
+            <div class="hero-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-8 0v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h1 class="hero-title hero-gradient">Login</h1>
+            <p class="hero-description">Enter your username, mobile number and password to login.</p>
+
+            <!-- Personal Info Form -->
+            <form th:action="@{/login}" method="post" class="container" id="signup-step1" style="max-width: 500px; margin: 2rem auto; display: flex; flex-direction: column; gap: 1.5rem;">
+                <input type="text" name="username" placeholder="Username" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="mobNo" placeholder="Mobile No" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="password" placeholder="Password" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <!-- <input type="text" name="username" placeholder="Username" required><br><br>
+                <input type="text" name="mobNo" placeholder="Mobile No" required><br><br>
+                <input type="password" name="password" placeholder="Password" required><br><br> -->
+                <button type="submit" class="btn-primary" style="width:100%;">Login</button>
+            </form>
+        </div>
+    </section>
+
+
+
+
+<p th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></p>
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+</body>
+</html>

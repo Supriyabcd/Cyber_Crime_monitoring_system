@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberguard Desk | Sign Up - Credentials</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+                <div class="nav-links">
+                    <button onclick="window.location.href='/'" class="nav-link">Home</button>
+                    <button onclick="window.location.href='/trackcase'" class="nav-link">Track Case</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Threats</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Process</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Contact</button>
+
+
+                    <button onclick="window.location.href='../templates/login.html'" class="nav-cta">Login</button>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content container">
+            <div class="hero-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-8 0v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h1 class="hero-title hero-gradient">Sign Up - Step 2</h1>
+            <p class="hero-description">Create your account credentials.</p>
+
+            <!-- Login Credentials Form -->
+            <form class="container" id="signup-step2" style="max-width: 500px; margin: 2rem auto; display: flex; flex-direction: column; gap: 1.5rem;">
+                <input type="text" name="username" placeholder="Username" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="password" name="password" placeholder="Password" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+
+                <button type="submit" class="btn-primary" style="width:100%;">Sign Up</button>
+            </form>
+
+            <p style="color: #d1d5db; text-align: center;">Already have an account? <a href="login.html" style="color: #00d4ff;">Login here</a></p>
+        </div>
+    </section>
+
+    <script src="../static/scripts.js"></script>
+    <script>
+        document.getElementById('signup-step2').addEventListener('submit', function(e){
+            e.preventDefault();
+            const step1Data = JSON.parse(localStorage.getItem('signupStep1') || '{}');
+            const step2Data = Object.fromEntries(new FormData(this));
+            
+            // Combine both pages data
+            const signupData = { ...step1Data, ...step2Data };
+            
+            console.log('Signup Data:', signupData); // replace with actual backend submission
+            
+            alert('Signup complete! Check console for collected data.');
+            localStorage.removeItem('signupStep1');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

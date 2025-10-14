@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberguard Desk | Sign Up - Personal Info</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+                <div class="nav-links">
+                   <button onclick="window.location.href='/'" class="nav-link">Home</button>
+                    
+                    <button onclick="window.location.href='/'" class="nav-link">Threats</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Process</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Contact</button>
+ 
+                    <!-- <button onclick="window.location.href='/register1'" class="nav-cta">Login</button> -->
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Signup Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content container">
+            <div class="hero-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-8 0v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+            <h1 class="hero-title hero-gradient">Sign Up - Step 1</h1>
+            <p class="hero-description">Enter your personal information to create your CyberShield account.</p>
+
+            <!-- Personal Info Form -->
+            <form class="container" id="signup-step1" style="max-width: 500px; margin: 2rem auto; display: flex; flex-direction: column; gap: 1.5rem;">
+                <input type="text" name="fname" placeholder="First Name" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="lname" placeholder="Last Name" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="mob_no" placeholder="Mobile Number" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="date" name="dob" placeholder="Date of Birth" required style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="h_no" placeholder="House No." style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="street_no" placeholder="Street" style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="city" placeholder="City" style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+                <input type="text" name="state" placeholder="State" style="padding:1rem; border-radius:0.75rem; border:1px solid #374151; background:#111827; color:white;">
+
+                <button type="submit" class="btn-primary" style="width:100%;">Next</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="../static/scripts.js"></script>
+    <script>
+        document.getElementById('signup-step1').addEventListener('submit', function(e){
+            e.preventDefault();
+            // Save form data temporarily in localStorage
+            const formData = Object.fromEntries(new FormData(this));
+            localStorage.setItem('signupStep1', JSON.stringify(formData));
+            window.location.href = 'register2.html'; // go to next page
+        });
+    </script>
+</body>
+</html>

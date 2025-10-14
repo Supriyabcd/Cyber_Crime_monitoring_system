@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cybercrime — Educational Resources</title>
+  <link rel="stylesheet" href="../static/resources.css">
+  <script src="../static/resources.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-content">
+          <div class="nav-brand">
+            <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span class="nav-title">Cyberguard Desk</span>
+          </div>
+          <div class="nav-links">
+                <button onclick="window.location.href='../templates/home.html'" class="nav-link">Home</button>
+                    <button onclick="window.location.href='../templates/trackcase.html'" class="nav-link">Track Case</button>
+                    <button onclick="window.location.href='../templates/home.html'" class="nav-link">Threats</button>
+                    <button onclick="window.location.href='../templates/home.html'" class="nav-link">Process</button>
+                    <button onclick="window.location.href='../templates/home.html'" class="nav-link">Contact</button>
+                    
+            <button onclick="window.location.href='login.html'" class="nav-cta">Login</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header>
+      <div>
+        <h1>Educational Resources — Cybercrime Case Management</h1>
+        <p class="lead">Concise, actionable learning for common domains: Instagram Trolling, Hacking, Email Threats, and Game Bullying.</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="grid container">
+      <!-- Instagram Trolling -->
+      <section class="card cyan" id="legal-resources">
+        <div class="meta">
+          <div class="icon">
+            <!-- Instagram icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M2 12a10 10 0 1 1 20 0 10 10 0 1 1 -20 0"/>
+              <circle cx="17" cy="7" r="1"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Legal resources</h2>
+            <div class="desc">Understand the legal framework, reporting channels and what evidence to collect when a cyber incident happens.</div>
+          </div>
+        </div>
+        <ul class="tips">
+          <li>Know which laws apply in your country (cybercrime, harassment, data protection).</li>
+          <li>Preserve evidence: screenshots, timestamps, exported chat logs, IP headers when available.</li>
+          <li>Report to the correct body — police cyber cell, platform abuse reporting, or national CERT.</li>
+        </ul>
+        <div class="example">
+          <strong>Example (Instagram Trolling):</strong> Keep screenshots of abusive posts, note usernames, and URLs. Use platform's report flow and file a cyber complaint with authorities if threats or doxxing occur.
+        </div>
+      </section>
+
+      <!-- Email Threats -->
+      <section class="card red" id="threat-alerts">
+        <div class="meta">
+          <div class="icon">
+            <!-- Email icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M4 4h16v16H4z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Threat alerts & advisories</h2>
+            <div class="desc">Short, timely notices about active campaigns, phishing waves, credential leaks and trending scams.</div>
+          </div>
+        </div>
+        <ul class="tips">
+          <li>Subscribe to platform advisories (CERT, platform status pages).</li>
+          <li>Watch for suspicious account takeover patterns.</li>
+          <li>Verify advisories via official sources before acting.</li>
+        </ul>
+        <div class="example">
+          <strong>Example (Email Threats):</strong> A targeted phishing email claiming account suspension — verify sender domain, hover links, and contact official support (not reply-to address).
+        </div>
+      </section>
+
+      <!-- Hacking / Identity Protection -->
+      <section class="card green" id="identity-protection">
+        <div class="meta">
+          <div class="icon">
+            <!-- Hacking icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 2l7 4v5a7 7 0 0 1-14 0V6z"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Identity protection guide</h2>
+            <div class="desc">Steps to protect personal identity and recover from exposure or doxxing.</div>
+          </div>
+        </div>
+        <ul class="tips">
+          <li>Use unique passwords and password managers; enable MFA.</li>
+          <li>Minimize public personal data; remove exposed PII.</li>
+          <li>If doxxed, document evidence, request takedowns, and notify authorities if financial info exposed.</li>
+        </ul>
+        <div class="example">
+          <strong>Example (Hacking / Account Takeover):</strong> Revoke active sessions, change passwords, enable MFA, and check connected apps for malicious access.
+        </div>
+      </section>
+
+      <!-- Game Bullying -->
+      <section class="card pink" id="best-practices">
+        <div class="meta">
+          <div class="icon">
+            <!-- Game controller icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2" y="8" width="20" height="12" rx="2"/>
+              <circle cx="7" cy="14" r="1"/>
+              <circle cx="17" cy="14" r="1"/>
+            </svg>
+          </div>
+          <div>
+            <h2>Cybersecurity best practices</h2>
+            <div class="desc">Practical day-to-day measures individuals and small teams can adopt to improve security posture.</div>
+          </div>
+        </div>
+        <ul class="tips">
+          <li>Keep devices/software up-to-date; apply security patches regularly.</li>
+          <li>Think before you click: verify links, attachments, social engineering attempts.</li>
+          <li>Back up important data securely and test restores occasionally.</li>
+        </ul>
+        <div class="example">
+          <strong>Example (Game Bullying):</strong> Enable privacy to hide friend lists, report/block abusers, collect chat logs for evidence, and consider parental controls for minors.
+        </div>
+      </section>
+    </main>
+
+     <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberSecure Report</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional cybersecurity crime reporting platform dedicated to protecting individuals 
+                        and organizations from digital threats.
+                    </p>
+                    <div class="footer-security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>SSL Encrypted • Privacy Protected • GDPR Compliant</span>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="../templates/login.html">Report Crime</a>
+                    <a href="../templates/trackcase.html">Track Case</a>
+                    <a href="../templates/resources.html">Resources</a>
+                    <a href="home.html">Contact</a>
+                </div>
+                
+                <!-- <div class="footer-links">
+                    <h3>Legal</h3>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Disclaimer</a>
+                    <a href="#">Contact</a>
+                </div> -->
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberSecure Report. All rights reserved. Licensed cybersecurity reporting platform.
+                </p>
+                <div class="footer-disclaimer">
+                    <strong>Legal Disclaimer:</strong> This platform facilitates reporting of cybersecurity crimes. 
+                    Reports are forwarded to appropriate law enforcement agencies. Not all incidents may result in prosecution.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    
+  </div>
+</body>
+</html>

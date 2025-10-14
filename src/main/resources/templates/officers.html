@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Officers</title>
+</head>
+<body>
+
+    <h1>Officers</h1>
+    <a href="/add-officer">Add New Officer</a>
+    <br/><br/>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Password</th>
+            <th>Mobile No</th>
+            <th>Active?</th>
+            <th>Join Date</th>
+            <th>Domain ID</th>
+        </tr>
+        <tr th:each="o : ${officers}">
+            <td th:text="${o.officerId}"></td>
+            <td th:text="${o.fname}"></td>
+            <td th:text="${o.lname}"></td>
+            <td th:text="${o.password}"></td>
+            <td th:text="${o.mobNo}"></td>
+            <td th:text="${o.activeStatus}"></td>
+            <td th:text="${o.joinDate}"></td>
+            <td th:text="${o.domainId}"></td>
+        </tr>
+    </table>
+
+    <br/>
+    <a href="/">Back to Home</a>
+</body>
+</html>

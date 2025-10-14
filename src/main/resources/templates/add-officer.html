@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Officer</title>
+</head>
+<body>
+    <h1>Add Officer</h1>
+
+    <form th:action="@{/add-officer}" th:object="${officer}" method="post">
+        <label>First Name:</label>
+        <input type="text" th:field="*{fname}" required />
+        <br/><br/>
+
+        <label>Last Name:</label>
+        <input type="text" th:field="*{lname}" required />
+        <br/><br/>
+
+        <label>Password:</label>
+        <input type="password" th:field="*{password}" required />
+        <br/><br/>
+
+        <label>Mobile No:</label>
+        <input type="text" th:field="*{mobNo}" required />
+        <br/><br/>
+
+        <label>Active?</label>
+        <input type="checkbox" th:field="*{activeStatus}" />
+        <br/><br/>
+
+        <label>Join Date (yyyy-mm-dd):</label>
+        <input type="text" th:field="*{joinDate}" required />
+        <br/><br/>
+
+        <label>Domain ID:</label>
+        <input type="number" th:field="*{domainId}" />
+        <br/><br/>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <br/>
+    <a href="/officers">Back to Officers</a>
+</body>
+</html>

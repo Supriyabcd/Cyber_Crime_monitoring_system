@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberguard Desk | Users</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+                <div class="nav-links">
+                    <button onclick="window.location.href='/'" class="nav-link">Home</button>
+                    <button onclick="window.location.href='/showusers'" class="nav-link">Users</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Threats</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Process</button>
+                    <button onclick="window.location.href='/'" class="nav-link">Contact</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content container">
+            <h1 class="hero-title hero-gradient">Registered Users</h1>
+            <p class="hero-description">All users registered in the system are displayed below.</p>
+
+            <!-- Users Table -->
+            <div class="users-table-container" style="overflow-x:auto; margin-top:2rem;">
+                <table style="width:100%; border-collapse: collapse;">
+                    <thead style="background: #1f2937;">
+                        <tr>
+                            <th style="padding:1rem; color:#00d4ff;">ID</th>
+                            <th style="padding:1rem; color:#00d4ff;">First Name</th>
+                            <th style="padding:1rem; color:#00d4ff;">Last Name</th>
+                            <th style="padding:1rem; color:#00d4ff;">Mobile</th>
+                            <th style="padding:1rem; color:#00d4ff;">DOB</th>
+                            <th style="padding:1rem; color:#00d4ff;">City</th>
+                            <th style="padding:1rem; color:#00d4ff;">State</th>
+                            <th style="padding:1rem; color:#00d4ff;">Username</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="u : ${users}" style="background: #111827; border-bottom:1px solid #374151;">
+                            <td style="padding:1rem; text-align:center;" th:text="${u.userId}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.fname}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.lname}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.mobNo}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.dob}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.city}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.state}"></td>
+                            <td style="padding:1rem; text-align:center;" th:text="${u.username}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- Back Button -->
+            <div class="process-cta" style="margin-top:2rem;">
+                <button onclick="window.location.href='/'" class="btn-secondary">Back to Home</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

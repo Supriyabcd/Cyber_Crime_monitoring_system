@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Details & Domains</title>
+</head>
+<body>
+
+    <h1><a href="/add-domain">Add domain</a></h1>
+
+    <h1>Domains</h1>
+    <table border="1">
+        <tr>
+            <th>Domain ID</th><th>Domain Name</th><th>Created On</th><th>Active?</th>
+        </tr>
+        <tr th:each="d : ${domains}">
+            <td th:text="${d.domainId}"></td>
+            <td th:text="${d.domainName}"></td>
+            <td th:text="${d.createdOn}"></td>
+            <td th:text="${d.active}"></td>
+        </tr>
+    </table>
+</body>
+</html>

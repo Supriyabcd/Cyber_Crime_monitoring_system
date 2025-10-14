@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page - Cybercrime Management</title>
+</head>
+<body>
+    <h1>Welcome to Cybercrime Management System</h1>
+
+    <!-- Users -->
+    <h2>Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.userId}">1</td>
+            <td th:text="${user.fname}">First</td>
+            <td th:text="${user.lname}">Last</td>
+            <td th:text="${user.username}">username</td>
+        </tr>
+    </table>
+
+    <!-- Officers -->
+    <h2>Officers</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Domain ID</th>
+        </tr>
+        <tr th:each="officer : ${officers}">
+            <td th:text="${officer.officerId}">1</td>
+            <td th:text="${officer.fname}">First</td>
+            <td th:text="${officer.lname}">Last</td>
+            <td th:text="${officer.domainId}">1</td>
+        </tr>
+    </table>
+
+    <!-- Case Files -->
+    <h2>Case Files</h2>
+    <table border="1">
+        <tr>
+            <th>Case ID</th>
+            <th>Case Name</th>
+            <th>Created On</th>
+            <th>Status</th>
+            <th>User ID</th>
+            <th>Officer ID</th>
+            <th>Domain ID</th>
+        </tr>
+        <tr th:each="c : ${cases}">
+            <td th:text="${c.caseId}">1</td>
+            <td th:text="${c.caseName}">Case Name</td>
+            <td th:text="${c.createdOn}">2025-01-01</td>
+            <td th:text="${c.currentStatus}">Open</td>
+            <td th:text="${c.userId}">1</td>
+            <td th:text="${c.officerId}">1</td>
+            <td th:text="${c.domainId}">1</td>
+        </tr>
+    </table>
+</body>
+</html>

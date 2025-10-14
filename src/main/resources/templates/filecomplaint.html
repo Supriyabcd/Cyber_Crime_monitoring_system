@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="#" th:href="../static/dashboard.css"> -->
+      <link rel="stylesheet" href="/filecomplaint.css">
+</head>
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+
+                    <ul class="nav-list">
+                        
+                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Dashboard</button>
+                        <button onclick="window.location.href='declaration.html'" class="nav-link">File Complaint</button>
+                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Check Status</button>
+                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Officer Feedback</button>
+                    </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    
+    <main class="main">
+        <div class="container">
+            <!-- Complaint Section -->
+            <section id="complaint" class="section">
+                <br>
+                <br>
+                <br>
+                <h2>File New Complaint</h2>
+                <div class="complaint-form">
+                    <form id="complaintForm" method="post" action="/filecomplaint" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="caseTitle">Case Title</label>
+                        <input type="text" id="caseTitle" name="caseTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incidentType">Incident Type</label>
+                        <select id="incidentType" name="incidentType" required>
+                            <option value="">Select Incident Type</option>
+                            <option value="instagram trolling">Instragram trolling</option>
+                            <option value="email threats">Email Threats</option>
+                            <option value="game bullying">Game Bullying</option>
+                            <option value="hacking">Hacking</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Detailed Description</label>
+                        <textarea id="description" name="description" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="evidence">Upload Evidence (Optional)</label>
+                        <input type="file" id="evidence" name="evidence" accept=".jpg,.jpeg,.png">
+                        <small>Supported formats: JPG, PNG (Max 10MB)</small>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label for="platformName">Platform Name</label>
+                    <input type="text" name="platformName" id="platformName" placeholder="Instagram / WhatsApp" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label for="personalDetails">Your Handle / Email</label>
+                    <input type="text" name="personalDetails" id="personalDetails" placeholder="@userhandle / email" required>
+                    </div>
+
+                    <div class="form-group">
+                    <label>Suspect Details (comma separated):</label>
+                    <input type="text" name="suspectDetails" placeholder="e.g. John, Bob, Unknown Female" />
+
+                    </div>
+
+                    
+
+
+
+
+                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                </form>
+
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberSecure Report</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional cybersecurity crime reporting platform dedicated to protecting individuals 
+                        and organizations from digital threats.
+                    </p>
+                    <div class="footer-security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>SSL Encrypted • Privacy Protected • GDPR Compliant</span>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="/register1">Report Crime</a>
+                    <a href="/trackcase">Track Case</a>
+                    <a href="/resources">Resources</a>
+                    <a href="/">Contact</a>
+                </div>
+
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberSecure Report. All rights reserved. Licensed cybersecurity reporting platform.
+                </p>
+                <div class="footer-disclaimer">
+                    <strong>Legal Disclaimer:</strong> This platform facilitates reporting of cybersecurity crimes. 
+                    Reports are forwarded to appropriate law enforcement agencies. Not all incidents may result in prosecution.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+   <!-- <script src="#" th:src="@{/dashboard.js}"></script> -->
+    <script src="/dashboard.js"></script>
+</body>
+</html>

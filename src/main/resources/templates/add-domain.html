@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Domain</title>
+</head>
+<body>
+    <h1>Add Domain</h1>
+
+    <form th:action="@{/add-domain}" th:object="${domain}" method="post">
+        <label>Domain Name:</label>
+        <input type="text" th:field="*{domainName}" required />
+        <br/><br/>
+
+        <label>Created On (yyyy-mm-dd):</label>
+        <input type="text" th:field="*{createdOn}" placeholder="2025-09-20" required />
+        <br/><br/>
+
+        <label>Is Active?</label>
+        <input type="checkbox" th:field="*{active}" />
+        <br/><br/>
+
+        <button type="submit">Save</button>
+    </form>
+
+    <br/>
+    <a href="/domains">Back to Domains</a>
+</body>
+</html>
