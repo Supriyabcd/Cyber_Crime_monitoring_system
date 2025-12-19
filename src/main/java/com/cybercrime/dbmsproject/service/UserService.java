@@ -40,4 +40,16 @@ public class UserService {
     public UserDetail login(String username, String mobNo, String password) {
         return userDetailDAO.loginUser(username, mobNo, password);
     }
+
+    public UserDetail getUserById(int userId) {
+        return userDetailDAO.findById(userId);
+    }
+    
+    public void updateSessionToken(int userId, String token) {
+    userDetailDAO.updateSessionToken(userId, token);
+}
+public String getSessionToken(int userId) {
+    return userDetailDAO.getSessionToken(userId);
+}
+
 }

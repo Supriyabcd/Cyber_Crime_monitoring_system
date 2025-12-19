@@ -220,6 +220,41 @@ public UserDetail loginUser(String username, String mobNo, String password) {
     return users.isEmpty() ? null : users.get(0);
 }
 
+ public UserDetail findById(int userId) {
+    String sql = "SELECT * FROM UserDetail WHERE user_id = ?";
+    try {
+        return jdbcTemplate.queryForObject(sql, new Object[]{userId}, (rs, rowNum) ->
+                new UserDetail(
+                        rs.getInt("user_id"),
+                        rs.getString("fname"),
+                        rs.getString("lname"),
+                        rs.getString("mob_no"),
+                        rs.getString("dob"),
+                        rs.getString("h_no"),
+                        rs.getString("street_no"),
+                        rs.getString("city"),
+                        rs.getString("state"),
+                        rs.getString("username"),
+                        rs.getString("password")
+                )
+        );
+    } catch (Exception e) {
+        return null; // return null if no user found
+    }
+}
+
+// Update session token in DB
+public void updateSessionToken(int userId, String token) {
+    String sql = "UPDATE UserDetail SET session_token = ? WHERE user_id = ?";
+    jdbcTemplate.update(sql, token, userId);
+}
+
+// Fetch session token by userId
+public String getSessionToken(int userId) {
+    String sql = "SELECT session_token FROM UserDetail WHERE user_id = ?";
+    return jdbcTemplate.queryForObject(sql, new Object[]{userId}, String.class);
+}
+
 
 
 

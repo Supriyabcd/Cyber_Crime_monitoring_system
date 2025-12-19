@@ -1,5 +1,7 @@
 package com.cybercrime.dbmsproject.model;
 
+import java.util.List;
+
 public class Domain {
     private int domainId;
     private String domainName;
@@ -26,4 +28,6 @@ public class Domain {
 
     public boolean isActive() { return isActive; }
     public void setActive(boolean active) { isActive = active; }
+
+
 }

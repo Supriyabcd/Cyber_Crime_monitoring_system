@@ -92,6 +92,23 @@ public class DetailDAO {
     public int delete(int detailId) {
         return jdbcTemplate.update("DELETE FROM Detail WHERE detail_id=?", detailId);
     }
+
+    public List<Detail> findByCaseId(int caseId) {
+        String sql = "SELECT * FROM Detail WHERE case_id = ?";
+        return jdbcTemplate.query(sql, rowMapper, caseId);
+    }
+    // Update session token in DB
+public void updateSessionToken(int userId, String token) {
+    String sql = "UPDATE UserDetail SET session_token = ? WHERE user_id = ?";
+    jdbcTemplate.update(sql, token, userId);
+}
+
+// Fetch session token by userId
+public String getSessionToken(int userId) {
+    String sql = "SELECT session_token FROM UserDetail WHERE user_id = ?";
+    return jdbcTemplate.queryForObject(sql, new Object[]{userId}, String.class);
+}
+
 }
 
 

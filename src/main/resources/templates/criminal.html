@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supervisor - Criminal Information</title>
+  <link rel="stylesheet" th:href="@{/criminal.css}">
+</head>
+<body>
+
+  <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <!-- <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div> -->
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">CyberGuard Desk</span>
+                </div>
+
+                     <ul class="nav-list">
+                    <li><a href="/officer/officerdashboard" class="nav-link">Dashboard</a></li>
+                    <li><a href="/officer/officerdashboard" class="nav-link">My Cases</a></li>
+                    <li><a href="/criminal" class="nav-link">Add Criminal</a></li>
+                   
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('reports')">Reports</a></li> -->
+                    </ul>
+                    
+
+
+                    <!-- PROFILE DROPDOWN -->
+                <!-- <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> 
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/officer/officerlogin" >Logout</a>
+
+                    </div>
+                </div> -->
+<!-- END PROFILE DROPDOWN -->
+
+
+            </div>
+        </div>
+    </nav>
+
+  <!-- Main Section -->
+  <main class="main">
+    <section class="form-card">
+      <h2>Criminal Information</h2>
+
+      <div class="form-row">
+
+        <div class="form-group">
+          <label for="caseId">Case ID</label>
+          <select id="caseId"></select>
+        </div>
+
+
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" placeholder="Enter First Name">
+        </div>
+
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" placeholder="Enter Last Name">
+        </div>
+
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="date" id="dob">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="hno">House Number</label>
+          <input type="text" id="hno" placeholder="Enter House Number">
+        </div>
+
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input type="text" id="street" placeholder="Enter Street">
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="Enter City">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" placeholder="Enter State">
+        </div>
+
+        <div class="form-group">
+          <label for="mobNo">Mobile Number</label>
+          <input type="text" id="mobNo" placeholder="Enter Mobile Number">
+        </div>
+
+        <div class="form-group">
+          <label for="socialHandle">Social Handle</label>
+          <input type="text" id="socialHandle" placeholder="@username">
+        </div>
+      </div>
+
+      <!-- <div class="form-group full-width">
+          <label for="description">Criminal Description</label>
+          <textarea id="description" name="description" rows="4" placeholder="Enter details about the criminal" style="color: white; background-color: #222;"></textarea>
+        </div> -->
+
+        <div class="form-group full-width">
+          <label for="description">Criminal Description</label>
+          <!-- <textarea id="description" name="description" rows="4" placeholder="Enter details about the criminal"></textarea> -->
+          <textarea id="description" name="description" rows="6" placeholder="Enter each point on a new line (e.g. 'Uses phishing emails to lure victims')" style="color: white;"></textarea>
+          <small style="color: #9ca3af;">Each line will be saved as a separate bullet point.</small>
+        </div>
+        
+
+      </div>
+
+      <button class="btn-primary">Save Criminal Info</button>
+    </section>
+
+    
+  </main>
+
+                      
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <h3>CyberSecure Report</h3>
+        <p>Professional cybersecurity crime reporting platform dedicated to protecting individuals and organizations from digital threats.</p>
+        <p>SSL Encrypted • Privacy Protected • GDPR Compliant</p>
+      </div>
+      <div class="footer-right">
+        <h3>Quick Links</h3>
+        <a href="/supervisordashboard">Dashboard</a>
+        <a href="/supervisor-criminals">Criminal Records</a>
+        <a href="/supervisor-cases">Case Files</a>
+        <a href="/supervisor-audit-log">Audit Log</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 CyberSecure Report. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- <script>
+    function toggleMenu() {
+      alert('Menu clicked! (You can add dropdown logic here)');
+    }
+  </script> -->
+
+  <script>
+
+    function showSection(sectionName) {
+    // Hide all sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => section.classList.remove('active'));
+
+    // Show selected section
+    const targetSection = document.getElementById(sectionName);
+    if (targetSection) targetSection.classList.add('active');
+
+    // Update navigation links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    const activeLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+    if (activeLink) activeLink.classList.add('active');
+
+    currentSection = sectionName;
+}
+
+
+
+    function toggleProfileMenu() {
+    const menu = document.getElementById('profileMenu');
+    if (menu) menu.classList.toggle('show');
+}
+
+document.addEventListener('click', function (e) {
+    const menu = document.getElementById('profileMenu');
+    const dropdown = document.querySelector('.profile-dropdown');
+    if (menu && !dropdown.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+  const officerId = localStorage.getItem("officerId"); // assuming it's stored after login
+
+  async function loadCases() {
+    try {
+      const res = await fetch(`http://localhost:8080/officer/${officerId}/eligible-cases`);
+      const cases = await res.json();
+      const caseSelect = document.getElementById("caseId");
+
+      caseSelect.innerHTML = "<option value=''>Select a case</option>";
+      cases.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.caseId;
+        opt.textContent = `Case #${c.caseId}`;
+        caseSelect.appendChild(opt);
+      });
+    } catch (err) {
+      console.error("Error loading cases:", err);
+    }
+  }
+
+  function formatDescription(text) {
+  return text
+    .split("\n")                           // Split each line
+    .filter(line => line.trim() !== "")    // Remove empty lines
+    .map(line => "• " + line.trim())       // Add bullet points
+    .join("\n");                           // Join back as multi-line string
+}
+
+  async function saveCriminal() {
+
+    // Format description as bullet points
+  const formattedDescription = formatDescription(
+    document.getElementById("description").value
+  );
+    const data = {
+      caseId: document.getElementById("caseId").value,
+      fname: document.getElementById("fname").value,
+      lname: document.getElementById("lname").value,
+      dob: document.getElementById("dob").value,
+      hNo: document.getElementById("hno").value,
+      street: document.getElementById("street").value,
+      city: document.getElementById("city").value,
+      state: document.getElementById("state").value,
+      mobNo: document.getElementById("mobNo").value,
+      socialHandle: document.getElementById("socialHandle").value,
+      // description: document.getElementById("description").value   
+      description: formattedDescription
+      
+    };
+
+    try {
+      const res = await fetch(`http://localhost:8080/officer/${officerId}/criminals`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const msg = await res.text();
+      alert(msg);
+    } catch (err) {
+      alert("Error adding criminal: " + err.message);
+    }
+  }
+
+  document.querySelector(".btn-primary").addEventListener("click", saveCriminal);
+
+  window.onload = loadCases;
+</script>
+
+</body>
+</html>

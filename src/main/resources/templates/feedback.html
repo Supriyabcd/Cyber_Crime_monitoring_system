@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="#" th:href="../static/dashboard.css"> -->
+      <link rel="stylesheet" href="/filecomplaint.css">
+</head>
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+
+                     <ul class="nav-list">
+                        <li><a href="/userdashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" onclick="window.location.href='/filecomplaint'">File Complaint</a></li>
+                        <!-- <li><a href="#" class="nav-link" onclick="window.location.href='/status'">check status</a></li> -->
+                         <li><a href="/status" class="nav-link">Check Status</a></li>
+
+                        <li><a href="/feedback" class="nav-link">Officer Feedback</a></li>
+
+                    </ul>
+
+                        <!-- PROFILE DROPDOWN -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> <!-- lowercase 'p' to match JS -->
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/logout" >Logout</a>
+
+                    </div>
+                </div>
+<!-- END PROFILE DROPDOWN -->
+
+            </div>
+        </div>
+    </nav>
+
+    
+
+
+
+    
+    <main class="main">
+        <div class="container">
+            <!-- Complaint Section -->
+             <section id="feedback" class="section">
+    <br><br><br>
+    <h2>Officer Feedback</h2>
+    <div class="feedback-form">
+        <form id="feedbackForm" onsubmit="submitFeedback(event)">
+
+            <!-- Select Case -->
+            <div class="form-group">
+                <label for="caseSelect">Select Case</label>
+                <!-- Cases will be loaded dynamically using JS -->
+                <select id="caseSelect" required>
+                    <option value="">Choose a case</option>
+                    <!-- JS will insert options here dynamically -->
+                </select>
+            </div>
+
+            <!-- Officer Name (auto-filled, user cannot change) -->
+            <div class="form-group">
+                <label for="officerName">Officer Name</label>
+                <input type="text" id="officerName" placeholder="Officer name will auto-fill" readonly>
+            </div>
+
+            <!-- Star Ratings -->
+            <div class="form-group">
+                <label>Responsiveness</label>
+                <div class="rating-stars" id="responsivenessStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="responsivenessText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Confidentiality</label>
+                <div class="rating-stars" id="confidentialityStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="confidentialityText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Outcome Satisfaction</label>
+                <div class="rating-stars" id="outcomeStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="outcomeText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Overall Experience</label>
+                <div class="rating-stars" id="overallStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="overallText">Click to rate</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+    </div>
+</section>
+        
+        </div>
+
+    </main>
+
+    <!-- Profile Section -->
+                    <section id="profile" class="section">
+        <br><br><br>
+        <h2>Officer Profile</h2>
+
+        <div class="profile-card">
+            <form id="profileForm">
+            <div class="form-grid">
+               
+                <div class="form-group">
+                <label for="officerid">Officer ID</label>
+                <input type="text" id="officerid" readonly>
+                </div>
+
+                  <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" readonly>
+                </div>
+
+
+
+                <div class="form-group">
+                <label for="officername">Full Name</label>
+                <input type="text" id="officername" readonly>
+                </div>
+
+                <!-- <div class="form-group">
+                <label for="gender">Gender</label>
+                <input type="text" id="gender" readonly>
+                </div> -->
+
+                <div class="form-group">
+                <label for="doj">Join Date</label>
+                <input type="date" id="doj" readonly>
+                </div>
+
+                <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" readonly>
+                </div>
+
+                <!-- <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" readonly>
+                </div> -->
+
+                <div class="form-group">
+                <label for="Domain">Domain</label>
+                <input type="text" id="Domain" readonly>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-primary" onclick="toggleEdit()">Edit Profile</button>
+                <button type="button" class="btn btn-success" id="saveProfile" onclick="saveProfile()" style="display: none;">Save Changes</button>
+                <button type="button" class="btn btn-secondary" id="cancelEdit" onclick="cancelEdit()" style="display: none;">Cancel</button>
+            </div>
+            </form>
+        </div>
+        </section>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberSecure Report</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional cybersecurity crime reporting platform dedicated to protecting individuals 
+                        and organizations from digital threats.
+                    </p>
+                    <div class="footer-security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>SSL Encrypted • Privacy Protected • GDPR Compliant</span>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="/filecomplaint">Report Crime</a>
+                    <a href="/trackcase">Track Case</a>
+                    <a href="/resources">Resources</a>
+                    <a href="/#contact">Contact</a>
+                </div>
+
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberSecure Report. All rights reserved. Licensed cybersecurity reporting platform.
+                </p>
+                <div class="footer-disclaimer">
+                    <strong>Legal Disclaimer:</strong> This platform facilitates reporting of cybersecurity crimes. 
+                    Reports are forwarded to appropriate law enforcement agencies. Not all incidents may result in prosecution.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+   <!-- <script src="#" th:src="@{/dashboard.js}"></script> -->
+    <script src="/dashboard.js"></script>
+</body>
+</html>

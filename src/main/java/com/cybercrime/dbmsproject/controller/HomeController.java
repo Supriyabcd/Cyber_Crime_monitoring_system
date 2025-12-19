@@ -78,7 +78,7 @@ public class HomeController {
         this.caseFileDao = caseFileDao;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", "/home"})
     public String homePage(Model model) {
         List<com.cybercrime.dbmsproject.model.UserDetail> users = userDetailDao.findAll();
         List<com.cybercrime.dbmsproject.model.Officer> officers = officerDao.findAll();
@@ -104,6 +104,11 @@ public class HomeController {
     // public String userDashboardPage() {
     //     return "userdashboard"; // templates/trackcase.html
     // }
+
+    @GetMapping("/resources")
+    public String resourcesPage() {
+        return "resources"; // templates/resources.html
+    }
 
         
 

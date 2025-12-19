@@ -68,32 +68,72 @@ public class AuthController {
     }
 
 
+    // @PostMapping("/login")
+    // public String login(@RequestParam String username,
+    //                     @RequestParam String mobNo,
+    //                     @RequestParam String password,
+    //                     RedirectAttributes redirectAttributes,
+    //                     HttpSession session) {
+
+    //     UserDetail user = userService.login(username, mobNo, password);
+
+    //     if (user != null) {
+    //         // Save user in session
+    //         session.setAttribute("loggedInUser", user);
+
+    //         redirectAttributes.addFlashAttribute("successMessage", "Welcome " + user.getFname() + "!");
+    //         return "redirect:/userdashboard";
+    //     } else {
+    //         redirectAttributes.addFlashAttribute("errorMessage", "Invalid credentials!");
+    //         return "redirect:/login";
+    //     }
+    // }
+
     @PostMapping("/login")
-    public String login(@RequestParam String username,
-                        @RequestParam String mobNo,
-                        @RequestParam String password,
-                        RedirectAttributes redirectAttributes,
-                        HttpSession session) {
+public String login(@RequestParam String username,
+                    @RequestParam String mobNo,
+                    @RequestParam String password,
+                    RedirectAttributes redirectAttributes,
+                    HttpSession session) {
 
-        UserDetail user = userService.login(username, mobNo, password);
+    UserDetail user = userService.login(username, mobNo, password);
 
-        if (user != null) {
-            // Save user in session
-            session.setAttribute("loggedInUser", user);
+    if (user != null) {
+        // Generate a new session token
+        String token = java.util.UUID.randomUUID().toString();
 
-            redirectAttributes.addFlashAttribute("successMessage", "Welcome " + user.getFname() + "!");
-            return "redirect:/userdashboard";
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Invalid credentials!");
-            return "redirect:/login";
-        }
+        // Save token in DB
+        userService.updateSessionToken(user.getUserId(), token);
+
+        // Store user and token in session
+        session.setAttribute("loggedInUser", user);
+        session.setAttribute("sessionToken", token);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Welcome " + user.getFname() + "!");
+        return "redirect:/userdashboard";
+    } else {
+        redirectAttributes.addFlashAttribute("errorMessage", "Invalid credentials!");
+        return "redirect:/login";
     }
+}
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
     }
+
+//     @GetMapping("/feedback")
+// public String showFeedbackPage(HttpSession session, Model model) {
+//     UserDetail user = (UserDetail) session.getAttribute("loggedInUser");
+//     if (user == null) {
+//         return "redirect:/login"; // redirect if not logged in
+//     }
+
+//     model.addAttribute("user", user);
+//     return "feedback"; // feedback.html inside templates folder
+// }
+
 
     @GetMapping("/filecomplaint")
 public String showFileComplaintForm(HttpSession session) {
@@ -103,6 +143,7 @@ public String showFileComplaintForm(HttpSession session) {
     }
     return "filecomplaint"; // corresponds to filecomplaint.html in templates folder
 }
+
 
 
 //     @PostMapping("/filecomplaint")
@@ -184,8 +225,14 @@ public String fileComplaintSubmit(
             String uploadDir = System.getProperty("user.dir") + "/uploads/";
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
-            uploadPath = uploadDir + System.currentTimeMillis() + "_" + evidence.getOriginalFilename();
-            evidence.transferTo(new File(uploadPath));
+            // uploadPath = uploadDir + System.currentTimeMillis() + "_" + evidence.getOriginalFilename();
+            // evidence.transferTo(new File(uploadPath));
+
+            String fileName = System.currentTimeMillis() + "_" + evidence.getOriginalFilename();
+            File dest = new File(uploadDir + fileName);
+            evidence.transferTo(dest);
+            uploadPath = "/uploads/" + fileName; // ✅ store relative path
+
         }
 
         CaseFile caseFile = new CaseFile();
@@ -195,7 +242,7 @@ public String fileComplaintSubmit(
         caseFile.setUserId(userId);
         caseFile.setDomainId(domainId);
         caseFile.setCreatedOn(LocalDate.now());
-        caseFile.setCurrentStatus("Not Assigned");
+        caseFile.setCurrentStatus("Unassigned");
 
         int caseId = caseFileDAO.save(caseFile);
 
@@ -238,7 +285,7 @@ public String fileComplaintSubmit(
 }
 
 @GetMapping("/userdashboard")
-public String userDashboard(HttpSession session, Model model) {
+public String userDashboard(HttpSession session, Model model, @RequestParam(defaultValue = "5") int limit) {
     UserDetail user = (UserDetail) session.getAttribute("loggedInUser");
     if (user == null) {
         return "redirect:/login";
@@ -248,11 +295,12 @@ public String userDashboard(HttpSession session, Model model) {
 
     // Stats
     int totalCases = caseFileDAO.countByUserId(userId);
-    int pendingCases = caseFileDAO.countByUserIdAndStatus(userId, "Not Assigned");
+    int pendingCases = caseFileDAO.countByUserIdAndNotStatus(userId, "Resolved");
     int resolvedCases = caseFileDAO.countByUserIdAndStatus(userId, "Resolved");
 
     // Recent activity
-    List<CaseFile> recentCases = caseFileDAO.findRecentByUserId(userId, 5);
+    List<CaseFile> recentCases = caseFileDAO.findRecentByUserId(userId,5);
+
 
     // Add all attributes to model
     model.addAttribute("user", user);
@@ -263,6 +311,43 @@ public String userDashboard(HttpSession session, Model model) {
 
     return "userdashboard";
 }
+
+
+@GetMapping("/status")
+public String viewUserStatus(HttpSession session, Model model) {
+    // get current logged-in user
+    UserDetail user = (UserDetail) session.getAttribute("loggedInUser");
+
+    if (user == null) {
+        return "redirect:/login"; // user not logged in
+    }
+
+    Integer userId = user.getUserId();
+    List<CaseFile> cases = caseFileDAO.findAllByUserId(userId);
+
+    System.out.println("Fetched " + cases.size() + " cases for user ID: " + userId);
+
+    model.addAttribute("user", user);
+    model.addAttribute("cases", cases);
+
+    return "status"; // will render templates/status.html
+}
+
+// @GetMapping("/status")
+// public String viewStatus(Model model, HttpSession session) {
+//     Integer userId = (Integer) session.getAttribute("userId");
+//     if (userId == null) {
+//         return "redirect:/login";
+//     }
+
+//     List<CaseFile> cases = caseFileDAO.getCasesByUserId(userId);
+//     model.addAttribute("cases", cases);
+
+//     return "status"; // your status.html page
+// }
+
+
+
 
 
     

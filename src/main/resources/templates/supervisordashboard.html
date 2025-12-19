@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybercrime Case Management - Supervisor Dashboard</title>
+    <link rel="stylesheet" href="/officerdashboard.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">CyberGuard Desk</span>
+                </div>
+
+                <ul class="nav-list">
+                    <li class="admin-menu-container">
+                        <button class="admin-menu-btn" onclick="toggleAdminMenu()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                        <div class="admin-dropdown" id="adminDropdown">
+                            <a href="#" onclick="showSection('users-table')">Users Management</a>
+                            <a href="#" onclick="showSection('officers-table')">Officers Database</a>
+                            <a href="#" onclick="showSection('cases-table')">Cases Database</a>
+                            <a href="#" onclick="showSection('evidence-table')">Evidence Repository</a>
+                        </div>
+                    </li>
+                    <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('oversight')">Case Oversight</a></li>
+
+                       <li><a href="/auditlog" class="nav-link">Audit Log</a></li>
+     
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('officers')">Officer Management</a></li> -->
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('assignments')">Assignments</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('analytics')">Analytics</a></li> -->
+                </ul>
+
+                <!-- PROFILE DROPDOWN -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> <!-- lowercase 'p' to match JS -->
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/logout" >Logout</a>
+
+                    </div>
+                </div>
+<!-- END PROFILE DROPDOWN -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <br><br><br>
+                <h2>Supervisor Dashboard</h2>
+                    <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCases" th:text="${totalCases}">0</div>
+
+                        <div class="stat-label">Total Cases</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeOfficers" th:text="${activeOfficers}">0</div>
+                        <div class="stat-label">Active Officers</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingAssignment" th:text="${unassignedCases}">0</div>
+                        <div class="stat-label">Pending Assignment</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-number" id="closureRate" th:text="${closureRate + '%'}">0%</div>
+                        <div class="stat-label">Case Closure Rate</div>
+                    </div>
+                </div> 
+
+                    <!-- <div class="chart-card">
+                        <h3>Officer Performance Overview</h3>
+                        <div class="performance-overview">
+                            <div class="officer-performance">
+                                <div class="officer-info">
+                                    <span class="officer-name">Inspector Kumar</span>
+                                    <span class="case-count">8 cases</span>
+                                </div>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="officer-performance">
+                                <div class="officer-info">
+                                    <span class="officer-name">Inspector Sharma</span>
+                                    <span class="case-count">6 cases</span>
+                                </div>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="officer-performance">
+                                <div class="officer-info">
+                                    <span class="officer-name">Inspector Singh</span>
+                                    <span class="case-count">5 cases</span>
+                                </div>
+                                <div class="performance-bar">
+                                    <div class="performance-fill" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+            
+                <!-- Case Oversight Section -->
+                <section id="oversight" class="section">
+        <br><br><br>
+        <h2>Case Oversight</h2>
+        <div class="cases-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Case ID</th>
+                        <th>Case Name</th>
+                        <th>Assigned Officer</th>
+                        <th>Status</th>
+                        <th>Reported By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="oversightCasesBody">
+                    <!-- JS will add rows here -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+
+            <!-- Officer Management Section -->
+            <section id="officers" class="section">
+                <br><br><br>
+                <h2>Officer Management</h2>
+                <div class="officers-grid">
+                    <div class="officer-card">
+                        <div class="officer-avatar">
+                            <div class="avatar-placeholder">IK</div>
+                        </div>
+                        <div class="officer-info">
+                            <h3>Inspector Kumar</h3>
+                            <p>Cybercrime Specialist</p>
+                            <div class="officer-stats">
+                                <span>Active Cases: 8</span>
+                                <span>Completion Rate: 90%</span>
+                                <span>Experience: 5 years</span>
+                            </div>
+                        </div>
+                        <div class="officer-actions">
+                            <button class="btn btn-primary" onclick="viewOfficerDetails('kumar')">View Details</button>
+                            <button class="btn btn-outline" onclick="assignCase('kumar')">Assign Case</button>
+                        </div>
+                    </div>
+
+                    <div class="officer-card">
+                        <div class="officer-avatar">
+                            <div class="avatar-placeholder">IS</div>
+                        </div>
+                        <div class="officer-info">
+                            <h3>Inspector Sharma</h3>
+                            <p>Digital Forensics Expert</p>
+                            <div class="officer-stats">
+                                <span>Active Cases: 6</span>
+                                <span>Completion Rate: 85%</span>
+                                <span>Experience: 7 years</span>
+                            </div>
+                        </div>
+                        <div class="officer-actions">
+                            <button class="btn btn-primary" onclick="viewOfficerDetails('sharma')">View Details</button>
+                            <button class="btn btn-outline" onclick="assignCase('sharma')">Assign Case</button>
+                        </div>
+                    </div>
+
+                    <div class="officer-card">
+                        <div class="officer-avatar">
+                            <div class="avatar-placeholder">ISi</div>
+                        </div>
+                        <div class="officer-info">
+                            <h3>Inspector Singh</h3>
+                            <p>Network Security Analyst</p>
+                            <div class="officer-stats">
+                                <span>Active Cases: 5</span>
+                                <span>Completion Rate: 75%</span>
+                                <span>Experience: 3 years</span>
+                            </div>
+                        </div>
+                        <div class="officer-actions">
+                            <button class="btn btn-primary" onclick="viewOfficerDetails('singh')">View Details</button>
+                            <button class="btn btn-outline" onclick="assignCase('singh')">Assign Case</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Assignments Section -->
+            <section id="assignments" class="section">
+                <br><br><br>
+                <h2>Case Assignments</h2>
+                <div class="assignment-form">
+                    <h3>Assign New Case</h3>
+                    <form onsubmit="assignNewCase(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="unassignedCase">Select Case</label>
+                                <select id="unassignedCase" required>
+                                    <option value="">Choose unassigned case</option>
+                                    <option value="CC2024005">CC2024005 - Ransomware Attack</option>
+                                    <option value="CC2024006">CC2024006 - Credit Card Fraud</option>
+                                    <option value="CC2024007">CC2024007 - Identity Theft</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="assignOfficer">Assign to Officer</label>
+                                <select id="assignOfficer" required>
+                                    <option value="">Choose officer</option>
+                                    <option value="kumar">Inspector Kumar (8 active cases)</option>
+                                    <option value="sharma">Inspector Sharma (6 active cases)</option>
+                                    <option value="singh">Inspector Singh (5 active cases)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- <div class="form-group">
+                                <label for="priority">Priority Level</label>
+                                <select id="priority" required>
+                                    <option value="">Select priority</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div> -->
+                            
+                            <!-- <div class="form-group">
+                                <label for="deadline">Deadline</label>
+                                <input type="date" id="deadline" required>
+                            </div> -->
+                        </div>
+                        
+                        <!-- <div class="form-group">
+                            <label for="assignmentNotes">Assignment Notes</label>
+                            <textarea id="assignmentNotes" rows="4" placeholder="Special instructions or important case details..."></textarea>
+                        </div> -->
+                        
+                        <button type="submit" class="btn btn-primary">Assign Case</button>
+                    </form>
+                </div>
+
+                <div class="recent-assignments">
+                    <h3>Recent Assignments</h3>
+                    <div class="assignments-list">
+                        <div class="assignment-item">
+                            <div class="assignment-info">
+                                <h4>Case #CC2024004 assigned to Inspector Kumar</h4>
+                                <p>Online Banking Fraud </p>
+                                <span class="assignment-date">Assigned 2 hours ago</span>
+                            </div>
+                            <div class="assignment-status">
+                                <span class="status-accepted">Accepted</span>
+                            </div>
+                        </div>
+                        <div class="assignment-item">
+                            <div class="assignment-info">
+                                <h4>Case #CC2024003 assigned to Inspector Sharma</h4>
+                                <p>Cryptocurrency Scam</p>
+                                <span class="assignment-date">Assigned 1 day ago</span>
+                            </div>
+                            <div class="assignment-status">
+                                <span class="status-in-progress">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="section">
+                <br><br><br>
+                <h2>Analytics & Reports</h2>
+                <div class="analytics-dashboard">
+                    <div class="analytics-card">
+                        <h3>Case Resolution Metrics</h3>
+                        <div class="metrics-grid">
+                            <div class="metric">
+                                <span class="metric-value">7.2</span>
+                                <span class="metric-label">Avg. Resolution Days</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">85%</span>
+                                <span class="metric-label">Success Rate</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value">23</span>
+                                <span class="metric-label">Cases This Month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Team Performance</h3>
+                        <div class="team-metrics">
+                            <div class="team-metric">
+                                <span>Average Case Load: 6.3 cases/officer</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 63%;"></div>
+                                </div>
+                            </div>
+                            <div class="team-metric">
+                                <span>Team Efficiency: 88%</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 88%;"></div>
+                                </div>
+                            </div>
+                            <div class="team-metric">
+                                <span>Evidence Processing: 92%</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 92%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card full-width">
+                        <h3>Monthly Case Trends</h3>
+                        <div class="trend-chart">
+                            <div class="chart-bars">
+                                <div class="trend-bar" style="height: 60%;" title="January: 15 cases"></div>
+                                <div class="trend-bar" style="height: 75%;" title="February: 18 cases"></div>
+                                <div class="trend-bar" style="height: 90%;" title="March: 23 cases"></div>
+                                <div class="trend-bar" style="height: 65%;" title="April: 16 cases"></div>
+                                <div class="trend-bar" style="height: 80%;" title="May: 20 cases"></div>
+                                <div class="trend-bar" style="height: 95%;" title="June: 24 cases"></div>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                                <span>Jun</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="export-reports">
+                    <h3>Generate Reports</h3>
+                    <div class="export-buttons">
+                        <button class="btn btn-primary" onclick="exportReport('monthly')">Monthly Summary</button>
+                        <button class="btn btn-primary" onclick="exportReport('performance')">Performance Report</button>
+                        <button class="btn btn-primary" onclick="exportReport('statistics')">Crime Statistics</button>
+                        <button class="btn btn-outline" onclick="exportReport('custom')">Custom Report</button>
+                    </div>
+                </div> -->
+            </section>
+        </div>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <br><br><br>
+            <h2>Supervisor Profile</h2>
+
+            <div class="profile-card">
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="officerid">Officer ID</label>
+                            <input type="text" id="officerid" readonly>
+                        </div>
+
+                        
+
+                        <div class="form-group">
+                            <label for="officername">Full Name</label>
+                            <input type="text" id="officername" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="doj">Join Date</label>
+                            <input type="date" id="doj" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number</label>
+                            <input type="tel" id="mobile" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Domain">Domain</label>
+                            <input type="text" id="Domain" readonly>
+                        </div>
+                    </div>
+
+                    
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    
+    <footer class="footer"> 
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberGuard Desk - Supervisor Portal</span>
+                    </div>
+                    <p class="footer-description">
+                        Comprehensive cybercrime case management and oversight platform for supervisory personnel.
+                        Advanced analytics and team management tools.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="supervisor-dashboard.html#oversight">Case Oversight</a>
+                    <a href="#officers">Officer Management</a>
+                    <a href="#assignments">Case Assignments</a>
+                    <a href="#analytics">Analytics</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberGuard Desk - Supervisor Portal. All rights reserved. Authorized personnel only.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/supervisordashboard.js"></script>
+</body>
+</html>

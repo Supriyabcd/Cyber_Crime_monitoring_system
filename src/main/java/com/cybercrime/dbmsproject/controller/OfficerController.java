@@ -5,6 +5,7 @@ import com.cybercrime.dbmsproject.model.Officer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -34,4 +35,11 @@ public class OfficerController {
         officerDAO.save(officer);
         return "redirect:/officers";
     }
+    @GetMapping("/criminal")
+public ModelAndView criminalPage() {
+    return new ModelAndView("criminal");
+}
+
+
+
 }

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybercrime Case Management - Officer Dashboard</title>
+    <link rel="stylesheet" th:href="@{/officerdashboard.css}">
+</head>
+<body>
+
+   
+    <!-- Navigation --> 
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+
+                     <ul class="nav-list">
+                    <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('cases')">My Cases</a></li>
+                    <li><a href="/criminal" class="nav-link">Add Criminal</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('feedback')">Feedback</a></li>
+                   
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('reports')">Reports</a></li> -->
+                    </ul>
+                    
+
+
+                    <!-- PROFILE DROPDOWN -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> <!-- lowercase 'p' to match JS -->
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/officer/officerlogin" >Logout</a>
+
+                    </div>
+                </div>
+<!-- END PROFILE DROPDOWN -->
+
+
+            </div>
+        </div>
+    </nav>
+     
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+    <section id="dashboard" class="section active">
+        <br><br><br>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="assignedCases">12</div>
+                <div class="stat-label">Assigned Cases</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeCases">8</div>
+                <div class="stat-label">Active Investigations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingEvidence">3</div>
+                <div class="stat-label">Pending Evidence</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="closedCases">4</div>
+                <div class="stat-label">Closed</div>
+            </div>
+        </div>
+
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon">🔍</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New evidence uploaded for Case #CC2024001</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">📋</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Case #CC2024003 status updated to "Under Investigation"</div>
+                        <div class="activity-time">4 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">🆕</div>
+                    <div class="activity-content">
+                        <div class="activity-title">New case assigned: Online Banking Fraud</div>
+                        <div class="activity-time">1 day ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+                 <!-- Profile Section -->
+                    <section id="profile" class="section">
+        <br><br><br>
+        <h2>Officer Profile</h2>
+
+        <div class="profile-card">
+            <form id="profileForm">
+            <div class="form-grid">
+               
+                <div class="form-group">
+                <label for="officerid">Officer ID</label>
+                <input type="text" id="officerid" readonly>
+                </div>
+
+
+                <div class="form-group">
+                <label for="officername">Full Name</label>
+                <input type="text" id="officername" readonly>
+                </div>
+
+
+                <div class="form-group">
+                <label for="doj">Join Date</label>
+                <input type="date" id="doj" readonly>
+                </div>
+
+                <div class="form-group">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" readonly>
+                </div>
+
+
+                <div class="form-group">
+                <label for="Domain">Domain</label>
+                <input type="text" id="Domain" readonly>
+                </div>
+            </div>
+
+            <!-- <div class="form-actions">
+                <button type="button" class="btn btn-primary" onclick="toggleEdit()">Edit Profile</button>
+                <button type="button" class="btn btn-success" id="saveProfile" onclick="saveProfile()" style="display: none;">Save Changes</button>
+                <button type="button" class="btn btn-secondary" id="cancelEdit" onclick="cancelEdit()" style="display: none;">Cancel</button>
+            </div> -->
+            </form>
+        </div>
+        </section>
+
+           <!-- My Cases Section -->
+<section id="cases" class="section">
+    <br><br><br>
+    <h2>My Cases</h2>
+
+    <div class="status-filters">
+        <button class="filter-btn active" onclick="filterOfficerCases('all')">All Cases</button>
+        <button class="filter-btn" onclick="filterOfficerCases('Under Review')">Under Review</button>
+        <button class="filter-btn" onclick="filterOfficerCases('Resolved')">Resolved</button>
+        <button class="filter-btn" onclick="filterOfficerCases('Assigned')">Assigned</button>
+    </div>
+
+    <div class="cases-list">
+
+        <!-- Case 1 -->
+        <div class="case-card" data-status="investigating">
+            <div class="case-header">
+                <div class="case-id">Case #CC2024001</div>
+                <div class="case-status status-completed">Completed</div>
+            </div>
+            <div class="case-details">
+                <h4>Email Phishing Attack</h4>
+                <p>Received suspicious emails claiming to be from bank asking for account details.</p>
+                <div class="case-meta">
+                    <span><strong>Filed:</strong> Jan 15, 2024</span>
+                    <span><strong>Complainant:</strong> John Doe</span>
+                </div>
+            </div>
+           <!-- inside the case-actions of each case-card -->
+<div class="case-actions">
+  <div class="dropdown status-dropdown">
+    <button class="btn btn-primary dropdown-toggle" onclick="toggleStatusDropdown(event, this)">
+      Update Status
+    </button>
+
+    <!-- note the extra class "status-dropdown-menu" to avoid profile-dropdown conflicts -->
+    <div class="dropdown-menu status-dropdown-menu hidden" aria-hidden="true">
+      <button class="dropdown-item" onclick="changeCaseStatus(event, this, 'under review')">Under Review</button>
+      <button class="dropdown-item" onclick="changeCaseStatus(event, this, 'completed')">Completed</button>
+    </div>
+  </div>
+
+  <button class="btn btn-outline" onclick="victimdetails('CC2024001')">View Details</button>
+</div>
+
+        </div>
+
+        <!-- Case 2 -->
+        <div class="case-card" data-status="evidence">
+            <div class="case-header">
+                <div class="case-id">Case #CC2024002</div>
+                <div class="case-status status-under-review">Under Review</div>
+            </div>
+            <div class="case-details">
+                <h4>Social Media Fraud</h4>
+                <p>Fake profile created on social media using victim's photos and personal information.</p>
+                <div class="case-meta">
+                    <span><strong>Filed:</strong> Jan 20, 2024</span>
+                    <span><strong>Complainant:</strong> Jane Smith</span>
+                </div>
+            </div>
+            <div class="case-actions">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" onclick="toggleStatusDropdown(this)">Update Status</button>
+                    <div class="dropdown-menu hidden">
+                        <button class="dropdown-item" onclick="changeCaseStatus(this, 'under review')">Under Review</button>
+                        <button class="dropdown-item" onclick="changeCaseStatus(this, 'completed')">Completed</button>
+                    </div>
+                </div>
+                <button class="btn btn-outline" onclick="victimdetails('CC2024002')">View Details</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Feedback Section -->
+<section id="feedback" class="section hidden">
+    <br><br><br>
+    <h2>Officer Feedback</h2>
+    <div class="feedback-table-container">
+        <table class="feedback-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Outcome Satisfaction</th>
+                    <th>Overall Experience</th>
+                    <th>Responsiveness</th>
+                    <th>Privacy Respected</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <tr><td colspan="7">Loading feedback...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+         
+<!-- Investigation Workspace Section -->
+<section id="investigations" class="section">
+    <br><br><br>
+    <h2>Investigation Workspace</h2>
+
+    <div class="investigation-details">
+        <p><strong>Case Name:</strong> <span id="investigationCaseName"></span></p>
+        <p><strong>Case ID:</strong> <span id="investigationCaseId"></span></p>
+        <p><strong>User ID:</strong> <span id="investigationUserId"></span></p>
+        <p><strong>Domain:</strong> <span id="investigationDomain"></span></p>
+         <div class="investigation-images">
+            <h3>Evidence Images</h3>
+            <div id="investigationImage"
+                 style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+                <!-- images will be appended here dynamically -->
+            </div>
+        </div>
+
+
+
+        <h3>Case Details</h3>
+        <pre id="investigationDetails" style="white-space: pre-wrap; background:#000000; padding:10px; border-radius:5px;"></pre>
+    </div>
+    <div style="margin-top: 20px;">
+    <button class="btn-back" onclick="goBackToCases()">⬅ Back to Cases</button>
+</div>
+</section>
+
+
+            <!-- Reports Section -->
+            <section id="reports" class="section">
+                <br><br><br>
+                <h2>Investigation Reports</h2>
+                <div class="report-form">
+                    <h3>Generate Investigation Report</h3>
+                    <form onsubmit="generateReport(event)">
+                        <div class="form-group">
+                            <label for="reportCase">Select Case</label>
+                            <select id="reportCase" required>
+                                <option value="">Choose a case</option>
+                                <option value="CC2024001">Case #CC2024001 - Email Phishing Attack</option>
+                                <option value="CC2024002">Case #CC2024002 - Social Media Fraud</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reportType">Report Type</label>
+                            <select id="reportType" required>
+                                <option value="">Select type</option>
+                                <option value="progress">Progress Report</option>
+                                <option value="final">Final Investigation Report</option>
+                                <option value="forensic">Forensic Analysis Report</option>
+                                <option value="summary">Case Summary</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reportFindings">Investigation Findings</label>
+                            <textarea id="reportFindings" rows="6" placeholder="Detail your investigation findings, evidence analysis, and conclusions..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reportRecommendations">Recommendations</label>
+                            <textarea id="reportRecommendations" rows="4" placeholder="Provide recommendations for next steps or case resolution..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Generate Report</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberGuard Desk - Officer Portal</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional cybersecurity investigation platform for law enforcement officers.
+                        Secure, efficient, and comprehensive case management system.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="#cases">My Cases</a>
+                    <a href="#investigations">Investigation Tools</a>
+                    <a href="#evidence">Evidence Management</a>
+                    <a href="#reports">Generate Reports</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberGuard Desk - Officer Portal. All rights reserved. Authorized personnel only.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Status Update Popup -->
+<div id="statusModal" class="status-modal">
+  <div class="status-modal-content">
+    <h3>Update Case Status</h3>
+    <p id="statusCaseId"></p>
+    
+    <div class="status-options">
+      <button data-status="Under Review">Under Review</button>
+      <button data-status="Resolved">Resolved</button>
+      <!-- <button data-status="Unassigned">Unassigned</button>
+      <button data-status="Assigned">Assigned</button> -->
+
+    </div>
+    
+    <div class="modal-actions">
+      <button id="closeModal">Cancel</button>
+    </div>
+  </div>
+</div>
+
+    <script th:src="@{/officerdashboard.js}"></script>
+</body>
+
+<!-- Criminal Details Modal -->
+<div id="criminalModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeCriminalModal()">&times;</span>
+    <h2>Criminal Details</h2>
+    <div id="criminalList"></div>
+  </div>
+</div>
+
+</html>

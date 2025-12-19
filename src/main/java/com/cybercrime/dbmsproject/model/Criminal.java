@@ -16,6 +16,7 @@ public class Criminal {
     private String state;
     private String mobNo;
     private String socialHandle;
+    private String description;
 
     public Criminal() {}
 
@@ -72,4 +73,14 @@ public class Criminal {
 
     public String getSocialHandle() { return socialHandle; }
     public void setSocialHandle(String socialHandle) { this.socialHandle = socialHandle; }
+
+
+public String getDescription() {
+    return description;
+}
+
+public void setDescription(String description) {
+    this.description = description;
+}
+
 }

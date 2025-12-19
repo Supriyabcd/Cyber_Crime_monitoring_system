@@ -1005,3 +1005,111 @@ body {
 .dropdown-menu.show {
   display: block;
 }
+
+
+
+/* Check status in user-dashboard */
+
+.status-not-assigned {
+    color: #e67e22;
+}
+.status-under-investigation {
+    color: #f1c40f;
+}
+.status-resolved {
+    color: #2ecc71;
+}
+
+
+/* Feedback */
+
+.feedback-form {
+  background: #1f2937; /* Dark background */
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border: 1px solid #374151;
+  margin-bottom: 32px;
+  color: #ffffff; /* All text white */
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+/* Inputs & Select */
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #ffffff;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Star Ratings */
+.rating-stars {
+  display: flex;
+  gap: 6px;
+}
+
+.star {
+  font-size: 32px;
+  color: #d1d5db; /* Light gray default */
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.active,
+.star:hover {
+  color: #fbbf24; /* Yellow for selected/hover */
+}
+
+.rating-text {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #ffffff;
+}
+
+/* Submit Button */
+.btn-primary {
+  background: #3b82f6;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .feedback-form {
+    padding: 24px;
+  }
+  .star {
+    font-size: 28px;
+  }
+}

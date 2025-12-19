@@ -130,4 +130,9 @@ public String addUser(@ModelAttribute UserDetail userDetail,
         return "showusers";
     }
 
+    @GetMapping("/declaration")
+    public String declarationPage() {
+        return "declaration"; 
+    }
+
 }

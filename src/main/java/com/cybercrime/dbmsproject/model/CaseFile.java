@@ -10,6 +10,8 @@ public class CaseFile {
     private Integer userId;
     private Integer officerId;
     private Integer domainId;
+    private String officerName;  // transient field, not in DB
+
 
     // 🔹 new fields
     private String detailedDescription;
@@ -42,4 +44,13 @@ public class CaseFile {
 
     public String getImagePaths() { return imagePaths; }
     public void setImagePaths(String imagePaths) { this.imagePaths = imagePaths; }
+
+    public String getOfficerName() {
+    return officerName;
+    }
+
+    public void setOfficerName(String officerName) {
+        this.officerName = officerName;
+    }
+
 }

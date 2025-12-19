@@ -25,10 +25,13 @@
                 </div>
 
                     <ul class="nav-list">
-                        <li><a href="#" class="nav-link active" onclick="showSection('dashboard')">Dashboard</a></li>
-                        <li><a href="#" class="nav-link" onclick="window.location.href='/filecomplaint'">File Complaint</a></li>
-                        <li><a href="#" class="nav-link" onclick="showSection('status')">Check Status</a></li>
-                        <li><a href="#" class="nav-link" onclick="showSection('feedback')">Officer Feedback</a></li>
+                        <li><a href="/userdashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" onclick="window.location.href='/declaration'">File Complaint</a></li>
+                        <!-- <li><a href="#" class="nav-link" onclick="window.location.href='/status'">check status</a></li> -->
+                         <li><a href="/status" class="nav-link">Check Status</a></li>
+
+                        <li><a href="/feedback" class="nav-link">Officer Feedback</a></li>
+
                     </ul>
 
                     
@@ -104,47 +107,40 @@
             </section>
 
             <!-- Profile Section -->
-            <section id="profile" class="section">
-                <br>
-                <br>
-                <br>
-                <h2>User Profile</h2>
-                <div class="profile-card">
-                    <form id="profileForm">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="fullName">Full Name</label>
-                                <input type="text" id="fullName" value="John Doe" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" value="john.doe@email.com" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" value="+91 9876543210" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Address</label>
-                                <input type="text" id="address" value="123 Main Street, City, State" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="aadhar">Aadhar Number</label>
-                                <input type="text" id="aadhar" value="1234-5678-9012" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="occupation">Occupation</label>
-                                <input type="text" id="occupation" value="Software Engineer" readonly>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-primary" onclick="toggleEdit()">Edit Profile</button>
-                            <button type="button" class="btn btn-success" id="saveProfile" onclick="saveProfile()" style="display: none;">Save Changes</button>
-                            <button type="button" class="btn btn-secondary" id="cancelEdit" onclick="cancelEdit()" style="display: none;">Cancel</button>
-                        </div>
-                    </form>
+<!-- Profile Section -->
+    <section id="profile" class="section">
+        <br><br><br>
+        <h2>User Profile</h2>
+        <div class="profile-card">
+            <form id="profileForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" th:value="${user.fname} + ' ' + ${user.lname}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" 
+                            th:value="${user.hNo} + ', ' + ${user.streetNo} + ', ' + ${user.city} + ', ' + ${user.state}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" th:value="${user.username}" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobNo">Mobile Number</label>
+                        <input type="text" id="mobNo" th:value="${user.mobNo}" readonly>
+                    </div>
                 </div>
-            </section>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" onclick="toggleEdit()">Edit Profile</button>
+                    <button type="button" class="btn btn-success" id="saveProfile" onclick="saveProfile()" style="display: none;">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEdit" onclick="cancelEdit()" style="display: none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
 
             <!-- Complaint Section -->
             <section id="complaint" class="section">
@@ -185,136 +181,127 @@
 
             <!-- Status Section -->
             <section id="status" class="section">
-                <br>
-                <br>
-                <br>
-                <h2>Case Status</h2>
-                <div class="status-filters">
-                    <button class="filter-btn active" onclick="filterCases('all')">All Cases</button>
-                    <button class="filter-btn" onclick="filterCases('pending')">Pending</button>
-                    <button class="filter-btn" onclick="filterCases('investigating')">Under Investigation</button>
-                    <button class="filter-btn" onclick="filterCases('resolved')">Resolved</button>
+    <br><br><br>
+    <h2>Case Status</h2>
+
+    <div class="status-filters">
+        <button class="filter-btn active" onclick="filterCases('all')">All Cases</button>
+        <button class="filter-btn" onclick="filterCases('not assigned')">Pending</button>
+        <button class="filter-btn" onclick="filterCases('under investigation')">Under Investigation</button>
+        <button class="filter-btn" onclick="filterCases('resolved')">Resolved</button>
+    </div>
+
+    <div class="cases-list" id="casesList">
+        <div th:each="case : ${cases}" 
+             class="case-card" 
+             th:attr="data-status=${case.currentStatus.toLowerCase()}">
+
+            <div class="case-header">
+                <div class="case-id" th:text="'Case #' + ${case.caseId}"></div>
+                <div class="case-status" 
+                     th:classappend="' status-' + ${case.currentStatus.toLowerCase().replace(' ', '-')}" 
+                     th:text="${case.currentStatus}">
                 </div>
-                
-                <div class="cases-list" id="casesList">
-                    <div class="case-card" data-status="investigating">
-                        <div class="case-header">
-                            <div class="case-id">Case #CC2024001</div>
-                            <div class="case-status status-investigating">Under Investigation</div>
-                        </div>
-                        <div class="case-details">
-                            <h4>Email Phishing Attack</h4>
-                            <p>Received suspicious emails claiming to be from bank asking for account details.</p>
-                            <div class="case-meta">
-                                <span><strong>Filed:</strong> Jan 15, 2024</span>
-                                <span><strong>Officer:</strong> Inspector Kumar</span>
-                            </div>
-                        </div>
-                        <div class="case-actions">
-                            <button class="btn btn-outline" onclick="viewCaseDetails('CC2024001')">View Details</button>
-                        </div>
-                    </div>
-                    
-                    <div class="case-card" data-status="pending">
-                        <div class="case-header">
-                            <div class="case-id">Case #CC2024002</div>
-                            <div class="case-status status-pending">Pending Assignment</div>
-                        </div>
-                        <div class="case-details">
-                            <h4>Social Media Fraud</h4>
-                            <p>Fake profile created on social media using my photos and personal information.</p>
-                            <div class="case-meta">
-                                <span><strong>Filed:</strong> Jan 20, 2024</span>
-                                <span><strong>Officer:</strong> Not Assigned</span>
-                            </div>
-                        </div>
-                        <div class="case-actions">
-                            <button class="btn btn-outline" onclick="viewCaseDetails('CC2024002')">View Details</button>
-                        </div>
-                    </div>
-                    
-                    <div class="case-card" data-status="resolved">
-                        <div class="case-header">
-                            <div class="case-id">Case #CC2023045</div>
-                            <div class="case-status status-resolved">Resolved</div>
-                        </div>
-                        <div class="case-details">
-                            <h4>Online Shopping Fraud</h4>
-                            <p>Paid for product online but never received the item. Seller disappeared.</p>
-                            <div class="case-meta">
-                                <span><strong>Filed:</strong> Dec 10, 2023</span>
-                                <span><strong>Officer:</strong> Sub-Inspector Sharma</span>
-                            </div>
-                        </div>
-                        <div class="case-actions">
-                            <button class="btn btn-outline" onclick="viewCaseDetails('CC2023045')">View Details</button>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="case-details">
+                <h4 th:text="${case.caseName}"></h4>
+                <p th:text="${case.detailedDescription}"></p>
+                <div class="case-meta">
+                    <span><strong>Filed:</strong> <span th:text="${#dates.format(case.createdOn, 'dd MMM yyyy')}"></span></span>
+                    <span><strong>Officer:</strong> 
+                        <span th:text="${case.officerName != null ? case.officerName : 'Not Assigned'}"></span>
+                    </span>
                 </div>
+            </div>
+
+            <div class="case-actions">
+                <button class="btn btn-outline" 
+                        th:onclick="'viewCaseDetails(' + ${case.caseId} + ')'">
+                    View Details
+                </button>
+            </div>
+        </div>
+    </div>
             </section>
+
 
             <!-- Feedback Section -->
             <section id="feedback" class="section">
-                <br>
-                <br>
-                <br>
-                <h2>Officer Feedback</h2>
-                <div class="feedback-form">
-                    <form id="feedbackForm" onsubmit="submitFeedback(event)">
-                        <div class="form-group">
-                            <label for="caseSelect">Select Case</label>
-                            <select id="caseSelect" required>
-                                <option value="">Choose a case</option>
-                                <option value="CC2024001">Case #CC2024001 - Email Phishing Attack</option>
-                                <option value="CC2023045">Case #CC2023045 - Online Shopping Fraud</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="officerRating">Rate Officer Performance</label>
-                            <div class="rating-container">
-                                <div class="rating-stars" id="ratingStars">
-                                    <span class="star" data-rating="1">★</span>
-                                    <span class="star" data-rating="2">★</span>
-                                    <span class="star" data-rating="3">★</span>
-                                    <span class="star" data-rating="4">★</span>
-                                    <span class="star" data-rating="5">★</span>
-                                </div>
-                                <span class="rating-text" id="ratingText">Click to rate</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="feedbackText">Feedback Comments</label>
-                            <textarea id="feedbackText" rows="5" placeholder="Please share your experience with the investigating officer..." required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="anonymous" name="anonymous">
-                                Submit feedback anonymously
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-                    </form>
+    <br><br><br>
+    <h2>Officer Feedback</h2>
+    <div class="feedback-form">
+        <form id="feedbackForm" onsubmit="submitFeedback(event)">
+
+            <!-- Select Case -->
+            <div class="form-group">
+                <label for="caseSelect">Select Case</label>
+                <!-- Cases will be loaded dynamically using JS -->
+                <select id="caseSelect" required>
+                    <option value="">Choose a case</option>
+                    <!-- JS will insert options here dynamically -->
+                </select>
+            </div>
+
+            <!-- Officer Name (auto-filled, user cannot change) -->
+            <div class="form-group">
+                <label for="officerName">Officer Name</label>
+                <input type="text" id="officerName" placeholder="Officer name will auto-fill" readonly>
+            </div>
+
+            <!-- Star Ratings -->
+            <div class="form-group">
+                <label>Responsiveness</label>
+                <div class="rating-stars" id="responsivenessStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
                 </div>
-                
-                <div class="previous-feedback">
-                    <h3>Previous Feedback</h3>
-                    <div class="feedback-item">
-                        <div class="feedback-header">
-                            <span class="case-ref">Case #CC2023045</span>
-                            <span class="feedback-date">Jan 5, 2024</span>
-                        </div>
-                        <div class="feedback-rating">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-value">5/5</span>
-                        </div>
-                        <p>Excellent service by Sub-Inspector Sharma. Very professional and kept me updated throughout the investigation.</p>
-                    </div>
+                <div class="rating-text" id="responsivenessText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Confidentiality</label>
+                <div class="rating-stars" id="confidentialityStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
                 </div>
-            </section>
+                <div class="rating-text" id="confidentialityText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Outcome Satisfaction</label>
+                <div class="rating-stars" id="outcomeStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="outcomeText">Click to rate</div>
+            </div>
+
+            <div class="form-group">
+                <label>Overall Experience</label>
+                <div class="rating-stars" id="overallStars">
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                    <span class="star">&#9733;</span>
+                </div>
+                <div class="rating-text" id="overallText">Click to rate</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+    </div>
+</section>
         </div>
 
     </main>
@@ -344,10 +331,10 @@
                 
                 <div class="footer-links">
                     <h3>Quick Links</h3>
-                    <a href="/register1">Report Crime</a>
+                    <a href="/declaration">Report Crime</a>
                     <a href="/trackcase">Track Case</a>
                     <a href="/resources">Resources</a>
-                    <a href="/">Contact</a>
+                    <a href="/home#contact">Contact</a>
                 </div>
 
             </div>
@@ -365,7 +352,8 @@
     </footer>
         <!-- <script th:src="@{/dashboard.js}"></script> -->
 
-        <script src="/dashboard.js"></script>
+        <!-- <script src="/officerdashboard.js"></script> -->
+         <script src="/dashboard.js"></script>
 
 
       <!-- <script src="../static/dashboard.js"></script> -->

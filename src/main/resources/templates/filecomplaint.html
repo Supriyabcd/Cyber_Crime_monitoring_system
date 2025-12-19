@@ -20,17 +20,37 @@
                     <span class="nav-title">Cyberguard Desk</span>
                 </div>
 
-                    <ul class="nav-list">
-                        
-                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Dashboard</button>
-                        <button onclick="window.location.href='declaration.html'" class="nav-link">File Complaint</button>
-                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Check Status</button>
-                        <button onclick="window.location.href='../templates/userdashboard.html'" class="nav-link">Officer Feedback</button>
+                     <ul class="nav-list">
+                        <li><a href="/userdashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" onclick="window.location.href='/filecomplaint'">File Complaint</a></li>
+                        <!-- <li><a href="#" class="nav-link" onclick="window.location.href='/status'">check status</a></li> -->
+                         <li><a href="/status" class="nav-link">Check Status</a></li>
+
+                        <li><a href="/feedback" class="nav-link">Officer Feedback</a></li>
+
                     </ul>
+
+                        <!-- PROFILE DROPDOWN -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> <!-- lowercase 'p' to match JS -->
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/logout" >Logout</a>
+
+                    </div>
+                </div>
+<!-- END PROFILE DROPDOWN -->
 
             </div>
         </div>
     </nav>
+
+
 
     
     <main class="main">
@@ -43,57 +63,50 @@
                 <h2>File New Complaint</h2>
                 <div class="complaint-form">
                     <form id="complaintForm" method="post" action="/filecomplaint" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="caseTitle">Case Title</label>
-                        <input type="text" id="caseTitle" name="caseTitle" required>
-                    </div>
+            <div class="form-group">
+                <label for="caseTitle">Case Title</label>
+                <input type="text" id="caseTitle" name="caseTitle" required>
+            </div>
 
-                    <div class="form-group">
-                        <label for="incidentType">Incident Type</label>
-                        <select id="incidentType" name="incidentType" required>
-                            <option value="">Select Incident Type</option>
-                            <option value="instagram trolling">Instragram trolling</option>
-                            <option value="email threats">Email Threats</option>
-                            <option value="game bullying">Game Bullying</option>
-                            <option value="hacking">Hacking</option>
-                        </select>
-                    </div>
+            <div class="form-group">
+                <label for="incidentType">Incident Type</label>
+                <select id="incidentType" name="incidentType" required>
+                    <option value="">Select Incident Type</option>
+                    <option value="instagram trolling">Instagram Trolling</option>
+                    <option value="email threats">Email Threats</option>
+                    <option value="game bullying">Game Bullying</option>
+                    <option value="hacking">Hacking</option>
+                </select>
+            </div>
 
-                    <div class="form-group">
-                        <label for="description">Detailed Description</label>
-                        <textarea id="description" name="description" rows="6" required></textarea>
-                    </div>
+            <div class="form-group">
+                <label for="description">Detailed Description</label>
+                <textarea id="description" name="description" rows="6" required></textarea>
+            </div>
 
-                    <div class="form-group">
-                        <label for="evidence">Upload Evidence (Optional)</label>
-                        <input type="file" id="evidence" name="evidence" accept=".jpg,.jpeg,.png">
-                        <small>Supported formats: JPG, PNG (Max 10MB)</small>
-                    </div>
+            <div class="form-group">
+                <label for="evidence">Upload Evidence (Optional)</label>
+                <input type="file" id="evidence" name="evidence" accept=".jpg,.jpeg,.png">
+                <small>Supported formats: JPG, PNG (Max 10MB)</small>
+            </div>
 
+            <div class="form-group">
+                <label for="platformName">Platform Name</label>
+                <input type="text" id="platformName" name="platformName" placeholder="Instagram / WhatsApp" required>
+            </div>
 
-                    <div class="form-group">
-                    <label for="platformName">Platform Name</label>
-                    <input type="text" name="platformName" id="platformName" placeholder="Instagram / WhatsApp" required>
-                    </div>
+            <div class="form-group">
+                <label for="personalDetails">Your Handle / Email</label>
+                <input type="text" id="personalDetails" name="personalDetails" placeholder="@userhandle / email" required>
+            </div>
 
-                    <div class="form-group">
-                    <label for="personalDetails">Your Handle / Email</label>
-                    <input type="text" name="personalDetails" id="personalDetails" placeholder="@userhandle / email" required>
-                    </div>
+            <div class="form-group">
+                <label>Suspect Details (comma separated):</label>
+                <input type="text" name="suspectDetails" placeholder="e.g. John, Bob, Unknown Female">
+            </div>
 
-                    <div class="form-group">
-                    <label>Suspect Details (comma separated):</label>
-                    <input type="text" name="suspectDetails" placeholder="e.g. John, Bob, Unknown Female" />
-
-                    </div>
-
-                    
-
-
-
-
-                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
-                </form>
+            <button type="submit" class="btn btn-primary">Submit Complaint</button>
+        </form>
 
                 </div>
             </section>
@@ -127,10 +140,10 @@
                 
                 <div class="footer-links">
                     <h3>Quick Links</h3>
-                    <a href="/register1">Report Crime</a>
+                    <a href="/filecomplaint">Report Crime</a>
                     <a href="/trackcase">Track Case</a>
                     <a href="/resources">Resources</a>
-                    <a href="/">Contact</a>
+                    <a href="/#contact">Contact</a>
                 </div>
 
             </div>

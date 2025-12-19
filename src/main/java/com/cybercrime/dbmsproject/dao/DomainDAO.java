@@ -41,4 +41,17 @@ public class DomainDAO {
     return ids.stream().findFirst();
 }
 
+public Domain findById(int domainId) {
+    String sql = "SELECT * FROM Domain WHERE domain_id = ?";
+    List<Domain> domains = jdbcTemplate.query(sql, new Object[]{domainId}, (rs, rowNum) ->
+            new Domain(
+                    rs.getInt("domain_id"),
+                    rs.getString("domain_name"),
+                    rs.getString("created_on"),
+                    rs.getBoolean("is_active")
+            )
+    );
+    return domains.isEmpty() ? null : domains.get(0);
+}
+
 }

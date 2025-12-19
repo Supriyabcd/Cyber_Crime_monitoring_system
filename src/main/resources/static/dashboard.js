@@ -42,24 +42,49 @@ function initializeApp() {
 // ======================
 // Navigation Functions
 // ======================
-function showSection(sectionName) {
-    // Hide all sections
+// function showSection(sectionName) {
+//     // Hide all sections
+//     const sections = document.querySelectorAll('.section');
+//     sections.forEach(section => section.classList.remove('active'));
+
+//     // Show selected section
+//     const targetSection = document.getElementById(sectionName);
+//     if (targetSection) targetSection.classList.add('active');
+
+//     // Update navigation links
+//     const navLinks = document.querySelectorAll('.nav-link');
+//     navLinks.forEach(link => link.classList.remove('active'));
+
+//     const activeLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
+//     if (activeLink) activeLink.classList.add('active');
+
+//     currentSection = sectionName;
+// }
+
+
+// dashboard.js
+
+function showSection(sectionId) {
+    // hide all sections
     const sections = document.querySelectorAll('.section');
-    sections.forEach(section => section.classList.remove('active'));
+    sections.forEach(sec => sec.classList.remove('active'));
 
-    // Show selected section
-    const targetSection = document.getElementById(sectionName);
-    if (targetSection) targetSection.classList.add('active');
+    // show the clicked one
+    document.getElementById(sectionId).classList.add('active');
 
-    // Update navigation links
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => link.classList.remove('active'));
-
-    const activeLink = document.querySelector(`[onclick="showSection('${sectionName}')"]`);
-    if (activeLink) activeLink.classList.add('active');
-
-    currentSection = sectionName;
+    // update navbar active link
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => link.classList.remove('active'));
+    const clickedLink = Array.from(links).find(link => 
+        link.textContent.trim().toLowerCase().includes(sectionId)
+    );
+    if (clickedLink) clickedLink.classList.add('active');
 }
+
+function toggleProfileMenu() {
+    document.getElementById('profileMenu').classList.toggle('show');
+}
+
 
 
 
@@ -131,34 +156,34 @@ function loadUserData() {
 // ======================
 // Complaint Management
 // ======================
-function submitComplaint(event) {
-    event.preventDefault();
+// function submitComplaint(event) {
+//     event.preventDefault();
 
-    const complaintData = {
-        id: 'CC2024' + String(Date.now()).slice(-3),
-        type: document.getElementById('incidentType').value,
-        date: document.getElementById('incidentDate').value,
-        description: document.getElementById('description').value,
-        urgency: document.getElementById('urgency').value,
-        status: 'pending',
-        filedDate: new Date().toISOString().split('T')[0],
-        officer: 'Not Assigned'
-    };
+//     const complaintData = {
+//         id: 'CC2024' + String(Date.now()).slice(-3),
+//         type: document.getElementById('incidentType').value,
+//         date: document.getElementById('incidentDate').value,
+//         description: document.getElementById('description').value,
+//         urgency: document.getElementById('urgency').value,
+//         status: 'pending',
+//         filedDate: new Date().toISOString().split('T')[0],
+//         officer: 'Not Assigned'
+//     };
 
-    let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
-    complaints.push(complaintData);
-    localStorage.setItem('complaints', JSON.stringify(complaints));
+//     let complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+//     complaints.push(complaintData);
+//     localStorage.setItem('complaints', JSON.stringify(complaints));
 
-    showNotification('Complaint filed successfully! Case ID: ' + complaintData.id, 'success');
+//     showNotification('Complaint filed successfully! Case ID: ' + complaintData.id, 'success');
 
-    event.target.reset();
-    updateDashboardStats();
+//     event.target.reset();
+//     updateDashboardStats();
 
-    setTimeout(() => {
-        showSection('status');
-        updateCasesList();
-    }, 2000);
-}
+//     setTimeout(() => {
+//         showSection('status');
+//         updateCasesList();
+//     }, 2000);
+// }
 
 function setDefaultDate() {
     const today = new Date().toISOString().split('T')[0];
@@ -312,44 +337,167 @@ function getRatingText(rating) {
 function submitFeedback(event) {
     event.preventDefault();
 
-    if (selectedRating === 0) {
-        showNotification('Please select a rating before submitting feedback.', 'error');
+    const caseSelect = document.getElementById("caseSelect");
+    const selectedOption = caseSelect.options[caseSelect.selectedIndex];
+
+    if (!selectedOption.value) {
+        alert("Please select a case.");
         return;
     }
 
-    const feedbackData = {
-        caseId: document.getElementById('caseSelect').value,
-        rating: selectedRating,
-        feedback: document.getElementById('feedbackText').value,
-        anonymous: document.getElementById('anonymous').checked,
-        date: new Date().toISOString().split('T')[0]
-    };
+    const officerId = selectedOption.dataset.officerId;
 
-    let feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
-    feedbacks.push(feedbackData);
-    localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+    const data = new URLSearchParams({
+        caseId: caseSelect.value,
+        officerId: officerId,
+        responsiveness: document.getElementById("responsivenessStars").dataset.rating || 0,
+        confidentiality: document.getElementById("confidentialityStars").dataset.rating || 0,
+        outcomeSatisfaction: document.getElementById("outcomeStars").dataset.rating || 0,
+        overallExperience: document.getElementById("overallStars").dataset.rating || 0
+    });
 
-    showNotification('Feedback submitted successfully!', 'success');
+    fetch("/submitFeedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: data
+    })
+    .then(res => res.text())
+    .then(msg => {
+    // Create green success popup
+    const successMsg = document.createElement("div");
+    successMsg.textContent = "Feedback recorded successfully!";
+    successMsg.style.position = "fixed";
+    successMsg.style.top = "20px";
+    successMsg.style.left = "50%";
+    successMsg.style.transform = "translateX(-50%)";
+    successMsg.style.backgroundColor = "#4CAF50";
+    successMsg.style.color = "white";
+    successMsg.style.padding = "10px 20px";
+    successMsg.style.borderRadius = "5px";
+    successMsg.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+    successMsg.style.transition = "opacity 0.5s ease";
+    successMsg.style.zIndex = "9999";
+    document.body.appendChild(successMsg);
 
-    event.target.reset();
-    selectedRating = 0;
-    updateStarDisplay();
-    document.getElementById('ratingText').textContent = 'Click to rate';
+    // Keep popup visible for 1.5 seconds, then fade it out
+    setTimeout(() => {
+        successMsg.style.opacity = "0";
+    }, 1000);
+
+    // After fade completes, redirect to dashboard
+    setTimeout(() => {
+        successMsg.remove();
+        window.location.href = "/userdashboard"; // update if needed
+    }, 1000);
+    })
+
+
+
+
+    .catch(err => console.error("Feedback submission error:", err));
 }
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("feedbackForm")) {
+        loadUserCases();
+        setupStarRatings();
+    }
+});
+
+function loadUserCases() {
+    fetch("/user/cases")
+        .then(res => res.json())
+        .then(data => {
+            const caseSelect = document.getElementById("caseSelect");
+            caseSelect.innerHTML = '<option value="">Choose a case</option>';
+            data.forEach(c => {
+                const opt = document.createElement("option");
+                opt.value = c.case_id;
+                opt.textContent = `${c.case_name} (Officer: ${c.officer_name})`;
+                opt.dataset.officerId = c.officer_id;
+                opt.dataset.officerName = c.officer_name;
+                caseSelect.appendChild(opt);
+            });
+
+            caseSelect.addEventListener("change", e => {
+                const selected = caseSelect.options[caseSelect.selectedIndex];
+                document.getElementById("officerName").value = selected.dataset.officerName || "";
+            });
+        })
+        .catch(err => console.error("Error loading cases:", err));
+}
+
+function setupStarRatings() {
+    document.querySelectorAll(".rating-stars").forEach(container => {
+        const stars = container.querySelectorAll(".star");
+        stars.forEach((star, index) => {
+            star.addEventListener("click", () => {
+                stars.forEach((s, i) => s.classList.toggle("active", i <= index));
+                container.dataset.rating = index + 1;
+            });
+        });
+    });
+}
+
+// function submitFeedback(event) {
+//     event.preventDefault();
+
+//     const caseSelect = document.getElementById("caseSelect");
+//     const selectedOption = caseSelect.options[caseSelect.selectedIndex];
+//     const officerId = selectedOption.dataset.officerId;
+
+//     const data = new URLSearchParams({
+//         caseId: caseSelect.value,
+//         officerId: officerId,
+//         responsiveness: document.getElementById("responsivenessStars").dataset.rating || 0,
+//         confidentiality: document.getElementById("confidentialityStars").dataset.rating || 0,
+//         outcomeSatisfaction: document.getElementById("outcomeStars").dataset.rating || 0,
+//         overallExperience: document.getElementById("overallStars").dataset.rating || 0,
+//     });
+
+//     fetch("/submitFeedback", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//         body: data
+//     })
+//     .then(res => res.text())
+//     .then(msg => alert(msg))
+//     .catch(err => console.error("Feedback submission error:", err));
+// }
+
 
 // ======================
 // Dashboard Stats
 // ======================
+// function updateDashboardStats() {
+//     const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+//     const totalCases = complaints.length + 3; // Including static cases
+//     const pendingCases = complaints.filter(c => c.status === 'pending').length + 2;
+//     const resolvedCases = totalCases - pendingCases;
+
+//     document.getElementById('totalCases').textContent = totalCases;
+//     document.getElementById('pendingCases').textContent = pendingCases;
+//     document.getElementById('resolvedCases').textContent = resolvedCases;
+// }
+
+
 function updateDashboardStats() {
     const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
-    const totalCases = complaints.length + 3; // Including static cases
+    const totalCases = complaints.length + 3;
     const pendingCases = complaints.filter(c => c.status === 'pending').length + 2;
     const resolvedCases = totalCases - pendingCases;
 
-    document.getElementById('totalCases').textContent = totalCases;
-    document.getElementById('pendingCases').textContent = pendingCases;
-    document.getElementById('resolvedCases').textContent = resolvedCases;
+    const totalEl = document.getElementById('totalCases');
+    const pendingEl = document.getElementById('pendingCases');
+    const resolvedEl = document.getElementById('resolvedCases');
+
+    if (totalEl) totalEl.textContent = totalCases;
+    if (pendingEl) pendingEl.textContent = pendingCases;
+    if (resolvedEl) resolvedEl.textContent = resolvedCases;
 }
+
 
 // ======================
 // Utility Functions
@@ -609,50 +757,50 @@ function viewCaseDetails(caseId) {
     if (caseDetails) showModal('Case Details', generateCaseDetailsHTML(caseDetails));
 }
 
-function getCaseDetails(caseId) {
-    const mockDetails = {
-        'CC2024001': {
-            id: 'CC2024001',
-            title: 'Email Phishing Attack',
-            description: 'Received suspicious emails claiming to be from bank asking for account details.',
-            status: 'Under Investigation',
-            officer: 'Inspector Kumar',
-            filedDate: 'Jan 15, 2024',
-            priority: 'High',
-            updates: [
-                { date: 'Jan 16, 2024', update: 'Case assigned to Inspector Kumar' },
-                { date: 'Jan 18, 2024', update: 'Initial investigation started' },
-                { date: 'Jan 22, 2024', update: 'Evidence collected and being analyzed' }
-            ]
-        },
-        'CC2024002': {
-            id: 'CC2024002',
-            title: 'Social Media Fraud',
-            description: 'Fake profile created on social media using my photos and personal information.',
-            status: 'Pending Assignment',
-            officer: 'Not Assigned',
-            filedDate: 'Jan 20, 2024',
-            priority: 'Medium',
-            updates: [{ date: 'Jan 20, 2024', update: 'Case filed and under review' }]
-        },
-        'CC2023045': {
-            id: 'CC2023045',
-            title: 'Online Shopping Fraud',
-            description: 'Paid for product online but never received the item. Seller disappeared.',
-            status: 'Resolved',
-            officer: 'Sub-Inspector Sharma',
-            filedDate: 'Dec 10, 2023',
-            priority: 'Medium',
-            updates: [
-                { date: 'Dec 11, 2023', update: 'Case assigned to Sub-Inspector Sharma' },
-                { date: 'Dec 15, 2023', update: 'Merchant investigation initiated' },
-                { date: 'Dec 22, 2023', update: 'Fraudulent seller identified' },
-                { date: 'Jan 5, 2024', update: 'Case resolved - Refund processed' }
-            ]
-        }
-    };
-    return mockDetails[caseId];
-}
+// function getCaseDetails(caseId) {
+//     const mockDetails = {
+//         'CC2024001': {
+//             id: 'CC2024001',
+//             title: 'Email Phishing Attack',
+//             description: 'Received suspicious emails claiming to be from bank asking for account details.',
+//             status: 'Under Investigation',
+//             officer: 'Inspector Kumar',
+//             filedDate: 'Jan 15, 2024',
+//             priority: 'High',
+//             updates: [
+//                 { date: 'Jan 16, 2024', update: 'Case assigned to Inspector Kumar' },
+//                 { date: 'Jan 18, 2024', update: 'Initial investigation started' },
+//                 { date: 'Jan 22, 2024', update: 'Evidence collected and being analyzed' }
+//             ]
+//         },
+//         'CC2024002': {
+//             id: 'CC2024002',
+//             title: 'Social Media Fraud',
+//             description: 'Fake profile created on social media using my photos and personal information.',
+//             status: 'Pending Assignment',
+//             officer: 'Not Assigned',
+//             filedDate: 'Jan 20, 2024',
+//             priority: 'Medium',
+//             updates: [{ date: 'Jan 20, 2024', update: 'Case filed and under review' }]
+//         },
+//         'CC2023045': {
+//             id: 'CC2023045',
+//             title: 'Online Shopping Fraud',
+//             description: 'Paid for product online but never received the item. Seller disappeared.',
+//             status: 'Resolved',
+//             officer: 'Sub-Inspector Sharma',
+//             filedDate: 'Dec 10, 2023',
+//             priority: 'Medium',
+//             updates: [
+//                 { date: 'Dec 11, 2023', update: 'Case assigned to Sub-Inspector Sharma' },
+//                 { date: 'Dec 15, 2023', update: 'Merchant investigation initiated' },
+//                 { date: 'Dec 22, 2023', update: 'Fraudulent seller identified' },
+//                 { date: 'Jan 5, 2024', update: 'Case resolved - Refund processed' }
+//             ]
+//         }
+//     };
+//     return mockDetails[caseId];
+// }
 
 function generateCaseDetailsHTML(caseDetails) {
     let updatesHTML = '';
@@ -688,15 +836,38 @@ function updateCasesList() {
 // ======================
 // Feedback Management
 // ======================
+// function initializeStarRating() {
+//     const stars = document.querySelectorAll('.star');
+//     const ratingText = document.getElementById('ratingText');
+
+//     stars.forEach((star, index) => {
+//         star.addEventListener('click', () => {
+//             selectedRating = index + 1;
+//             updateStarDisplay();
+//             ratingText.textContent = getRatingText(selectedRating);
+//         });
+
+//         star.addEventListener('mouseover', () => {
+//             highlightStars(index + 1);
+//         });
+//     });
+
+//     document.getElementById('ratingStars').addEventListener('mouseleave', () => updateStarDisplay());
+// }
+
 function initializeStarRating() {
     const stars = document.querySelectorAll('.star');
     const ratingText = document.getElementById('ratingText');
+    const ratingStarsContainer = document.getElementById('ratingStars');
+
+    // If there's no rating section on this page, stop early
+    if (!ratingStarsContainer || stars.length === 0) return;
 
     stars.forEach((star, index) => {
         star.addEventListener('click', () => {
             selectedRating = index + 1;
             updateStarDisplay();
-            ratingText.textContent = getRatingText(selectedRating);
+            if (ratingText) ratingText.textContent = getRatingText(selectedRating);
         });
 
         star.addEventListener('mouseover', () => {
@@ -704,8 +875,9 @@ function initializeStarRating() {
         });
     });
 
-    document.getElementById('ratingStars').addEventListener('mouseleave', () => updateStarDisplay());
+    ratingStarsContainer.addEventListener('mouseleave', () => updateStarDisplay());
 }
+
 
 function highlightStars(rating) {
     document.querySelectorAll('.star').forEach((star, index) => {
@@ -722,47 +894,26 @@ function getRatingText(rating) {
     return ratingTexts[rating] || 'Click to rate';
 }
 
-function submitFeedback(event) {
-    event.preventDefault();
-
-    if (selectedRating === 0) {
-        showNotification('Please select a rating before submitting feedback.', 'error');
-        return;
-    }
-
-    const feedbackData = {
-        caseId: document.getElementById('caseSelect').value,
-        rating: selectedRating,
-        feedback: document.getElementById('feedbackText').value,
-        anonymous: document.getElementById('anonymous').checked,
-        date: new Date().toISOString().split('T')[0]
-    };
-
-    let feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
-    feedbacks.push(feedbackData);
-    localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
-
-    showNotification('Feedback submitted successfully!', 'success');
-
-    event.target.reset();
-    selectedRating = 0;
-    updateStarDisplay();
-    document.getElementById('ratingText').textContent = 'Click to rate';
-}
 
 // ======================
 // Dashboard Stats
 // ======================
 function updateDashboardStats() {
     const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
-    const totalCases = complaints.length + 3; // Including static cases
+    const totalCases = complaints.length + 3;
     const pendingCases = complaints.filter(c => c.status === 'pending').length + 2;
     const resolvedCases = totalCases - pendingCases;
 
-    document.getElementById('totalCases').textContent = totalCases;
-    document.getElementById('pendingCases').textContent = pendingCases;
-    document.getElementById('resolvedCases').textContent = resolvedCases;
+    const totalEl = document.getElementById('totalCases');
+    const pendingEl = document.getElementById('pendingCases');
+    const resolvedEl = document.getElementById('resolvedCases');
+
+    if (totalEl) totalEl.textContent = totalCases;
+    if (pendingEl) pendingEl.textContent = pendingCases;
+    if (resolvedEl) resolvedEl.textContent = resolvedCases;
 }
+
+
 
 // ======================
 // Utility Functions
@@ -835,3 +986,8 @@ function logout() {
         setTimeout(() => window.location.reload(), 1500);
     }
 }
+
+
+
+// Feedback section
+

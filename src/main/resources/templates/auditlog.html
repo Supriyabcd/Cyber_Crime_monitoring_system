@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybercrime Case Management - Supervisor Dashboard</title>
+    <link rel="stylesheet" th:href="@{/auditlog.css}">
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">CyberGuard Desk</span>
+                </div>
+
+                <ul class="nav-list">
+                    <li class="admin-menu-container">
+                        <button class="admin-menu-btn" onclick="toggleAdminMenu()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                        <div class="admin-dropdown" id="adminDropdown">
+                            <a href="#" onclick="showSection('users-table')">Users Management</a>
+                            <a href="#" onclick="showSection('officers-table')">Officers Database</a>
+                            <a href="#" onclick="showSection('cases-table')">Cases Database</a>
+                            <a href="#" onclick="showSection('evidence-table')">Evidence Repository</a>
+                        </div>
+                    </li>
+                        <li><a href="/officer/supervisordashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="/officer/supervisordashboard" class="nav-link">Case Oversight</a></li>
+
+                       <li><a href="/auditlog" class="nav-link">Audit Log</a></li>
+     
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('officers')">Officer Management</a></li> -->
+                    <!-- <li><a href="#" class="nav-link" onclick="showSection('assignments')">Assignments</a></li>
+                    <li><a href="#" class="nav-link" onclick="showSection('analytics')">Analytics</a></li> -->
+                </ul>
+
+                <!-- PROFILE DROPDOWN -->
+                <!-- <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu">
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/logout" >Logout</a>
+
+                    </div>
+                </div> -->
+<!-- END PROFILE DROPDOWN -->
+            </div>
+        </div>
+    </nav>
+
+     <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+          <!-- Audit Log Section -->
+<section id="auditlog" class="section">
+    <br><br><br>
+    <h2>Audit Log</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Log ID</th>
+                    <th>Case ID</th>
+                    <th>Previous Status</th>
+                    <th>Current Status</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="auditTableBody">
+                <!-- JS will populate logs here -->
+            </tbody>
+        </table>
+    </div>
+</section>
+
+    <footer class="footer"> 
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberGuard Desk - Supervisor Portal</span>
+                    </div>
+                    <p class="footer-description">
+                        Comprehensive cybercrime case management and oversight platform for supervisory personnel.
+                        Advanced analytics and team management tools.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="supervisor-dashboard.html#oversight">Case Oversight</a>
+                    <a href="#officers">Officer Management</a>
+                    <a href="#assignments">Case Assignments</a>
+                    <a href="#analytics">Analytics</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberGuard Desk - Supervisor Portal. All rights reserved. Authorized personnel only.
+                </p>
+            </div>
+        </div>
+    </footer>
+<script>
+async function loadAuditLogs() {
+  try {
+    const response = await fetch("http://localhost:8080/audit/all");
+    if (!response.ok) throw new Error("Failed to fetch audit logs");
+
+    const logs = await response.json();
+    const tableBody = document.getElementById("auditTableBody");
+    tableBody.innerHTML = "";
+
+    if (logs.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No logs found</td></tr>`;
+      return;
+    }
+
+    logs.forEach(log => {
+      const row = `
+        <tr>
+          <td>${log.logId}</td>
+          <td>${log.caseId}</td>
+          <td>${log.previousStatus}</td>
+          <td>${log.currentStatus}</td>
+          <td>${new Date(log.timestamp).toLocaleString()}</td>
+        </tr>
+      `;
+      tableBody.innerHTML += row;
+    });
+  } catch (error) {
+    console.error("Error loading audit logs:", error);
+  }
+}
+
+// Load logs when the page is opened
+window.onload = loadAuditLogs;
+</script>
+
+</body>
+</html>

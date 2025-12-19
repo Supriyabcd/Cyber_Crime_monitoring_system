@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FeedbackDAO {
@@ -37,32 +38,18 @@ public class FeedbackDAO {
 
     /** ➕ Add feedback and return generated feedback_id */
     public int save(Feedback f) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(conn -> {
-            PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO Feedback(user_id, officer_id, outcome_satisfaction, overall_experience, responsiveness, privacy_respected, feedback_date) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                Statement.RETURN_GENERATED_KEYS
-            );
-            ps.setInt(1, f.getUserId());
-            ps.setInt(2, f.getOfficerId());
-            ps.setInt(3, f.getOutcomeSatisfaction());
-            ps.setInt(4, f.getOverallExperience());
-            ps.setInt(5, f.getResponsiveness());
-            if (f.getPrivacyRespected() != null) ps.setBoolean(6, f.getPrivacyRespected());
-            else ps.setNull(6, Types.BOOLEAN);
-            if (f.getFeedbackDate() != null) ps.setDate(7, Date.valueOf(f.getFeedbackDate()));
-            else ps.setNull(7, Types.DATE);
-            return ps;
-        }, keyHolder);
+    Integer maxId = jdbcTemplate.queryForObject("SELECT COALESCE(MAX(feedback_id), 0) FROM Feedback", Integer.class);
+    f.setFeedbackId(maxId + 1);
 
-        Number key = keyHolder.getKey();
-        if (key != null) {
-            f.setFeedbackId(key.intValue());
-            return key.intValue();
-        }
-        return -1;
-    }
+    return jdbcTemplate.update(
+        "INSERT INTO Feedback(feedback_id, user_id, officer_id, outcome_satisfaction, overall_experience, responsiveness, privacy_respected, feedback_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        f.getFeedbackId(), f.getUserId(), f.getOfficerId(),
+        f.getOutcomeSatisfaction(), f.getOverallExperience(),
+        f.getResponsiveness(), f.getPrivacyRespected(),
+        f.getFeedbackDate() != null ? Date.valueOf(f.getFeedbackDate()) : null
+    );
+}
+
 
     /** 🔍 Get all feedbacks */
     public List<Feedback> findAll() {
@@ -87,7 +74,7 @@ public class FeedbackDAO {
         );
     }
 
-    /** ✏️ Update feedback */
+    /** ✏ Update feedback */
     public int update(Feedback f) {
         return jdbcTemplate.update(
                 "UPDATE Feedback SET outcome_satisfaction=?, overall_experience=?, responsiveness=?, privacy_respected=?, feedback_date=? " +
@@ -97,4 +84,41 @@ public class FeedbackDAO {
                 f.getFeedbackId(), f.getUserId(), f.getOfficerId()
         );
     }
+
+    public List<Map<String, Object>> getCasesForUser(int userId) {
+    String sql = """
+        SELECT c.case_id, 
+               c.case_name, 
+               o.officer_id, 
+               CONCAT(o.fname, ' ', o.lname) AS officer_name
+        FROM CaseFile c
+        JOIN Officer o ON c.officer_id = o.officer_id
+        WHERE c.user_id = ?
+    """;
+
+    return jdbcTemplate.queryForList(sql, userId);
+    }
+
+
+    /** 🔍 Get feedbacks for an officer with username */
+public List<Map<String, Object>> findByOfficerIdWithUserName(int officerId) {
+    String sql = """
+        SELECT 
+            f.feedback_id,
+            f.user_id,
+            CONCAT(u.fname, ' ', u.lname) AS user_name,
+            f.officer_id,
+            f.outcome_satisfaction,
+            f.overall_experience,
+            f.responsiveness,
+            f.privacy_respected,
+            f.feedback_date
+        FROM Feedback f
+        JOIN User u ON f.user_id = u.user_id
+        WHERE f.officer_id = ?
+        ORDER BY f.feedback_date DESC
+    """;
+    return jdbcTemplate.queryForList(sql, officerId);
+}
+
 }

@@ -747,3 +747,55 @@ function typeWriter(element, text, speed = 100) {
 //         typeWriter(heroTitle, originalText, 50);
 //     }
 // });
+
+
+const apiKey = "668d32946e5d44429b186412569d1d8e";
+const topics = 'cybercrimes';
+const query = encodeURIComponent(topics);
+const url = `https://newsapi.org/v2/everything?q=${query}&language=en&sortBy=publishedAt&apiKey=${apiKey}`;
+
+function fetchNews() {
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const newsContainer = document.getElementById('news');
+      newsContainer.innerHTML = ""; // Clear old news
+
+      const articles = data.articles.slice(0, 6); // top 6
+      if (articles.length === 0) {
+        newsContainer.innerHTML = "<p>No recent cybercrime news found.</p>";
+        return;
+      }
+
+      articles.forEach(article => {
+        const card = document.createElement('div');
+        card.className = 'news-card';
+
+        // Thumbnail
+        if (article.urlToImage) {
+          const img = document.createElement('img');
+          img.src = article.urlToImage;
+          img.alt = "News image";
+          card.appendChild(img);
+        }
+
+        // Headline
+        const title = document.createElement('h3');
+        title.textContent = article.title;
+        card.appendChild(title);
+
+        // Source and link
+        const link = document.createElement('a');
+        link.href = article.url;
+        link.target = "_blank";
+        link.textContent = "Read more →";
+        card.appendChild(link);
+
+        newsContainer.appendChild(card);
+      });
+    })
+    .catch(error => console.error("Error fetching news:", error));
+}
+
+fetchNews();
+setInterval(fetchNews, 300000);

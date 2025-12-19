@@ -15,6 +15,7 @@ public class UserDetail {
     private String username;
     private String password;
     private List<String> mnames;
+    private String sessionToken;
 
     // ✅ Default constructor (needed for forms and frameworks)
     public UserDetail() {
@@ -72,6 +73,12 @@ public class UserDetail {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+   
+
+    public String getSessionToken() { return sessionToken; }
+    public void setSessionToken(String sessionToken) { this.sessionToken = sessionToken; }
+
 }
 
 

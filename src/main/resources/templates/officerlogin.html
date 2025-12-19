@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Officer Login | CyberSecure Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-content">
+        <div class="nav-brand">
+          <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="nav-title">Cyberguard Desk</span>
+        </div>
+        <div class="nav-links">
+          <button onclick="window.location.href='../templates/home.html'" class="nav-link">Home</button>
+          <button onclick="window.location.href='../templates/trackcase.html'" class="nav-link">Track Case</button>
+          <button onclick="window.location.href='../templates/home.html#threats'" class="nav-link">Threats</button>
+          <button onclick="window.location.href='../templates/home.html#process'" class="nav-link">Process</button>
+          <button onclick="window.location.href='../templates/home.html#contact'" class="nav-link">Contact</button>
+          <button onclick="window.location.href='../templates/login.html'" class="nav-cta">Login</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Card -->
+  <div class="track-container">
+    <div class="track-card">
+      <h2 class="track-title">Welcome Officer</h2>
+
+      <!-- Login Form -->
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="identifier">Officer ID</label>
+          <input type="text" id="identifier" name="identifier" placeholder="Enter Officer ID" required>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JS to handle login -->
+  <script>
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const officer_id = document.getElementById("identifier").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const response = await fetch("http://localhost:8080/officer/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ officer_id, password })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            // Save JWT and officer info in localStorage
+            localStorage.setItem("jwtToken", data.token);
+            localStorage.setItem("officerName", data.name);
+            localStorage.setItem("role", data.role);
+            localStorage.setItem("officerId", data.officer_id);
+
+            // Redirect to dashboard based on role
+            if (data.role === "supervisor") {
+                window.location.href = "http://localhost:8080/officer/supervisordashboard";
+            } else {
+                // window.location.href = "officerdashboard.html";
+                window.location.href = "http://localhost:8080/officer/officerdashboard";
+
+            }
+
+        } else {
+            const errText = await response.text();
+            alert("Login failed: " + errText);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Check console.");
+    }
+});
+</script>
+
+</body>
+</html>

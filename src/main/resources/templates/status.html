@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="#" th:href="../static/dashboard.css"> -->
+      <link rel="stylesheet" href="/filecomplaint.css">
+</head>
+<body>
+
+        <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <svg class="nav-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="nav-title">Cyberguard Desk</span>
+                </div>
+
+                    <ul class="nav-list">
+                        <li><a href="/userdashboard" class="nav-link">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" onclick="window.location.href='/filecomplaint'">File Complaint</a></li>
+                        <!-- <li><a href="#" class="nav-link" onclick="window.location.href='/status'">check status</a></li> -->
+                         <li><a href="/status" class="nav-link">Check Status</a></li>
+
+                        <li><a href="/feedback" class="nav-link">Officer Feedback</a></li>
+
+                    </ul>
+
+                        <!-- PROFILE DROPDOWN -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleProfileMenu()">
+                        <svg class="profile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="7" r="4"></circle>
+                            <path d="M5.5 21a7.5 7.5 0 0 1 13 0"></path>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profileMenu"> <!-- lowercase 'p' to match JS -->
+                        <a href="#" onclick="showSection('profile')">View Profile</a>
+                        <a href="/logout" >Logout</a>
+
+                    </div>
+                </div>
+<!-- END PROFILE DROPDOWN -->
+
+            </div>
+        </div>
+    </nav>
+
+
+
+    
+    <main class="main">
+        <div class="container">
+
+            <!-- Status section -->
+            <section id="status" class="section">
+    <br><br><br>
+    <h2>Case Status</h2>
+
+    <div class="status-filters">
+        <button class="filter-btn active" onclick="filterCases('all')">All Cases</button>
+        <button class="filter-btn" onclick="filterCases('unassigned')">Unassigned</button>
+        <button class="filter-btn" onclick="filterCases('assigned')">Assigned</button>
+        <button class="filter-btn" onclick="filterCases('under review')">Under Review</button>
+        <button class="filter-btn" onclick="filterCases('resolved')">Resolved</button>
+    </div>
+
+    <div class="cases-list" id="casesList">
+        <div th:each="case : ${cases}" 
+            class="case-card" 
+            th:attr="data-status=${case.currentStatus.toLowerCase()}, 
+                    data-id=${case.caseId}, 
+                    data-image=${case.imagePaths}">
+
+
+            <div class="case-header">
+                <div class="case-id" th:text="'Case #' + ${case.caseId}"></div>
+                <div class="case-status" 
+                     th:classappend="' status-' + ${case.currentStatus.toLowerCase().replace(' ', '-')}" 
+                     th:text="${case.currentStatus}">
+                </div>
+            </div>
+
+            <div class="case-details">
+                <h4 th:text="${case.caseName}"></h4>
+                <p th:text="${case.detailedDescription}"></p>
+                <div class="case-meta">
+                    <span><strong>Filed:</strong> <span th:text="${case.createdOn}"></span></span>
+                    <!-- <span><strong>Officer:</strong> 
+                        <span th:text="${case.officerName != null ? case.officerName : 'Unassigned'}"></span>
+
+                    </span> -->
+                    <span><strong>Officer:</strong>
+                        <span th:text="${case.officerName != null ? case.officerName : 'Unassigned'}"></span>
+                    </span>
+
+                </div>
+            </div>
+
+            <div class="case-actions">
+                <button class="btn btn-outline" 
+                        th:onclick="'viewCaseDetails(' + ${case.caseId} + ')'">
+                    View Details
+                </button>
+                <div id="caseModal" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <h3 id="modalCaseTitle"></h3>
+                        <p id="modalCaseDescription"></p>
+                        <div id="modalEvidence"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+            </section>
+        </div>
+
+    </main>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <span>CyberSecure Report</span>
+                    </div>
+                    <p class="footer-description">
+                        Professional cybersecurity crime reporting platform dedicated to protecting individuals 
+                        and organizations from digital threats.
+                    </p>
+                    <div class="footer-security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <circle cx="12" cy="16" r="1"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>SSL Encrypted • Privacy Protected • GDPR Compliant</span>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="/filecomplaint">Report Crime</a>
+                    <a href="/trackcase">Track Case</a>
+                    <a href="/resources">Resources</a>
+                    <a href="/#contact">Contact</a>
+                </div>
+
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 CyberSecure Report. All rights reserved. Licensed cybersecurity reporting platform.
+                </p>
+                <div class="footer-disclaimer">
+                    <strong>Legal Disclaimer:</strong> This platform facilitates reporting of cybersecurity crimes. 
+                    Reports are forwarded to appropriate law enforcement agencies. Not all incidents may result in prosecution.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+   <!-- <script src="#" th:src="@{/dashboard.js}"></script> -->
+    <!-- <script src="/dashboard.js"></script> -->
+     <script>
+function filterCases(status) {
+    const cases = document.querySelectorAll('.case-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    // remove active class from all buttons
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // add active to the clicked one
+    event.target.classList.add('active');
+    
+    cases.forEach(card => {
+        const cardStatus = card.getAttribute('data-status');
+        
+        // if "all" selected, show all
+        if (status === 'all') {
+            card.style.display = 'block';
+        } 
+        // otherwise match status
+        else if (cardStatus === status) {
+            card.style.display = 'block';
+        } 
+        else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+    function viewCaseDetails(caseId) {
+        const caseCard = document.querySelector(`.case-card[data-id='${caseId}']`);
+        const title = caseCard.querySelector('h4').innerText;
+        const description = caseCard.querySelector('p').innerText;
+        const evidencePath = caseCard.getAttribute('data-image');
+
+        document.getElementById('modalCaseTitle').innerText = title;
+        document.getElementById('modalCaseDescription').innerText = description;
+
+        const modalEvidence = document.getElementById('modalEvidence');
+        if (evidencePath && evidencePath.trim() !== "") {
+            modalEvidence.innerHTML =   `<img src="${evidencePath}" alt="Evidence Image" style="max-width:100%; border-radius:10px; margin-top:10px;">`;
+        } else {
+            modalEvidence.innerHTML = `<p>No evidence uploaded.</p>`;
+        }
+
+        const modal = document.getElementById('caseModal');
+        modal.style.display = 'flex';
+
+        // Close modal if user clicks outside modal content
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

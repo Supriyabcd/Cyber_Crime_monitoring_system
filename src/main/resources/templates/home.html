@@ -8,7 +8,7 @@
     <!-- <link rel="stylesheet" href="../static/styles.css"> -->
      <!-- <link rel="stylesheet" href="#" th:href="@{/styles.css}"> -->
      <link rel="stylesheet" href="/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"> -->
 </head>
 <body>
     <!-- Navigation -->
@@ -33,7 +33,7 @@
                     <button onclick="window.location.href='/showusers'" class="nav-link">Users</button>
                     <button onclick="scrollToSection('process')" class="nav-link">Process</button>
                     <button onclick="scrollToSection('contact')" class="nav-link">Contact</button>
-                    <button onclick="window.location.href='/adduser'" class="nav-cta">Login</button>
+                    <button onclick="window.location.href='/login'" class="nav-cta">Login</button>
 
 
                 </div>
@@ -65,7 +65,7 @@
             </p>
             
             <div class="hero-buttons">
-                <button  id="report" class="btn-primary" onclick="window.location.href='../templates/login.html'">
+                <button  id="report" class="btn-primary" onclick="window.location.href='/login'">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                         <polyline points="14,2 14,8 20,8"/>
@@ -257,12 +257,12 @@
             </div>
             
             <div class="process-cta">
-                <button class="btn-primary" onclick="window.location.href='../templates/login.html'">Start Your Report</button>
+                <button class="btn-primary" onclick="window.location.href='/login'">Start Your Report</button>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section1 -->
     <section id="contact" class="contact-section">
         <div class="container">
             <div class="section-header">
@@ -322,7 +322,7 @@
                 <div class="resources-card">
                     <h3 class="resources-title">Quick Resources</h3>
     <div class="resources-list">
-        <a href="../templates/resources.html" class="resource-item">
+        <a th:href="@{/resources}" class="resource-item">
             <span>Cybersecurity Best Practices</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -331,7 +331,7 @@
             </svg>
         </a>
 
-        <a href="../templates/resources.html" class="resource-item">
+        <a th:href="@{/resources}" class="resource-item">
             <span>Identity Protection Guide</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -341,7 +341,7 @@
         </a>
 
         <!-- ✅ Replaced "Report Status Tracking" with Threat Alerts -->
-        <a href="../templates/resources.html" class="resource-item">
+        <a th:href="@{/resources}" class="resource-item">
             <span>Threat Alerts & Advisories</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -350,7 +350,7 @@
             </svg>
         </a>
 
-        <a href="../templates/resources.html" class="resource-item">
+        <a th:href="@{/resources}" class="resource-item">
             <span>Legal Resources</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -363,6 +363,27 @@
             </div>
         </div>
     </section>
+
+
+    <!-- News section-->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    News <span class="text-green">section</span>
+                </h2>
+                <p class="section-description">
+                    Get to know the latest cyber crime news.
+                </p>
+            </div>
+
+            <div id="news" class="news-grid">
+                <p>Loading headlines...</p>
+            </div>
+        </div>
+    </section>
+
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -391,10 +412,10 @@
                 
                 <div class="footer-links">
                     <h3>Quick Links</h3>
-                    <a href="../templates/login.html">Report Crime</a>
-                    <a href="../templates/trackcase.html">Track Case</a>
-                    <a href="../templates/resources.html">Resources</a>
-                    <a href="#contact">Contact</a>
+                    <a href="/login">Report Crime</a>
+                    <a href="/trackcase">Track Case</a>
+                    <a href="/resources">Resources</a>
+                    <a href="/#contact">Contact</a>
                 </div>
                 
                 <!-- <div class="footer-links">
@@ -404,6 +425,7 @@
                     <a href="#">Disclaimer</a>
                     <a href="#">Contact</a>
                 </div> -->
+
             </div>
             
             <div class="footer-bottom">
