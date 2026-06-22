@@ -26,7 +26,7 @@ The system allows victims to file complaints online, officers to manage cases ef
 
 ---
 
-### Supervisor
+### Supervisor(Leads all the officers in their domain)
 - **Assign Cases:** Allocate unassigned or pending cases to available officers based on domain or workload.  
 - **Monitor Progress:** Track overall case activity and ensure timely handling.  
 - **View Feedback:** Review user feedback related to officers under their supervision.  
